@@ -3,11 +3,47 @@ title: "R SDK"
 description: "rsynthbio — the official R client for the Synthesize Bio platform."
 ---
 
-<Note>
-  Full `rsynthbio` documentation is being migrated into Mintlify. Tracked in **APP-2303**.
-</Note>
+`rsynthbio` is an R package that provides a convenient interface to the [Synthesize Bio](https://www.synthesize.bio/) API. It lets you generate realistic gene expression data for specified biological conditions, work with reference samples, and predict metadata from observed expression — all from R.
 
-In the meantime, the current docs live at:
+If you'd prefer 1-click dataset generation and analysis, try the [web platform](https://app.synthesize.bio/datasets/).
 
-- [synthesizebio.github.io/rsynthbio](https://synthesizebio.github.io/rsynthbio/) — generated reference
-- [github.com/synthesizebio/rsynthbio](https://github.com/synthesizebio/rsynthbio) — source
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/r-sdk/installation">
+    Install from CRAN, GitHub, or a local source build.
+  </Card>
+  <Card title="Getting started" icon="rocket" href="/r-sdk/getting-started">
+    Authenticate, list models, and make your first prediction.
+  </Card>
+  <Card title="Baseline models" icon="dna" href="/r-sdk/models/baseline">
+    Generate synthetic expression from metadata alone.
+  </Card>
+  <Card title="Reference conditioning" icon="microscope" href="/r-sdk/models/reference-conditioning">
+    Anchor generation to a real reference sample.
+  </Card>
+  <Card title="Metadata prediction" icon="magnifying-glass" href="/r-sdk/models/metadata-prediction">
+    Infer biological metadata from observed expression.
+  </Card>
+  <Card title="Function reference" icon="code" href="/r-sdk/reference">
+    All exported functions, with `?function_name` for details.
+  </Card>
+</CardGroup>
+
+## Quickstart
+
+```r
+library(rsynthbio)
+
+set_synthesize_token(use_keyring = TRUE)
+
+query <- get_example_query(model_id = "gem-1-bulk")$example_query
+result <- predict_query(query, model_id = "gem-1-bulk")
+
+metadata <- result$metadata
+expression <- result$expression
+```
+
+## Source & support
+
+- [Source code](https://github.com/synthesizebio/rsynthbio) — issues, releases, and contributing
+- [CRAN page](https://cran.r-project.org/package=rsynthbio) — installation and the official reference manual PDF
+- Email [support@synthesize.bio](mailto:support@synthesize.bio)

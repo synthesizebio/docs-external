@@ -45,7 +45,21 @@
           },
           {
             "group": "R SDK",
-            "pages": ["r-sdk/index"]
+            "pages": [
+              "r-sdk/index",
+              "r-sdk/installation",
+              "r-sdk/getting-started",
+              {
+                "group": "Models",
+                "pages": [
+                  "r-sdk/models/baseline",
+                  "r-sdk/models/reference-conditioning",
+                  "r-sdk/models/metadata-prediction"
+                ]
+              },
+              "r-sdk/reference",
+              "r-sdk/license"
+            ]
           },
           {
             "group": "MCP",
