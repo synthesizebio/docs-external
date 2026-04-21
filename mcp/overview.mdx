@@ -1,0 +1,38 @@
+---
+title: "Overview"
+description: "Learn what Synthesize Bio MCP does, what inputs it expects, and what results users can expect back."
+---
+
+Synthesize Bio MCP lets an AI tool send a structured request to Synthesize Bio, wait for the analysis to finish, and return the finished result to the user.
+
+## What it analyzes
+
+The MCP is built for differential gene expression workflows driven by natural-language prompts. A typical request compares two groups, such as:
+
+- heart vs liver
+- tumor vs normal tissue
+- CD4+ T cells vs CD8+ T cells
+
+## What Claude does behind the scenes
+
+Each analysis runs as a multi-step workflow:
+
+1. Claude submits the request to Synthesize Bio.
+2. Synthesize Bio extracts the sample groups described in the prompt.
+3. The platform runs gene expression model inference.
+4. The platform performs statistical differential expression analysis.
+5. Claude returns the completed output when the workflow finishes.
+
+## What to expect from results
+
+- Most analyses take about 3 to 5 minutes.
+- Claude may show progress updates while the job is still running.
+- Completed results can include a readable report plus a JSON artifact for full technical details.
+
+## Current limits
+
+- The workflow performs one pairwise comparison at a time.
+- If your prompt implies more than two groups, the current behavior compares the first two groups alphabetically.
+- The statistical testing step uses Welch's t-test with Benjamini-Hochberg correction.
+
+For setup instructions, continue to [Connect in Claude](/mcp/connect-in-claude).

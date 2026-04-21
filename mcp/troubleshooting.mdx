@@ -1,0 +1,44 @@
+---
+title: "Troubleshooting"
+description: "Fix common connection, authentication, and analysis-expectation issues when using Synthesize Bio MCP."
+---
+
+## Claude cannot connect to the integration
+
+Check the connector URL first:
+
+```text
+https://app.synthesize.bio/api/mcp
+```
+
+Also confirm that:
+
+- the integration was saved successfully in Claude
+- you completed the browser sign-in flow
+- your Synthesize Bio account has access to the platform
+
+## The analysis is taking a long time
+
+This is usually expected. Most runs take about 3 to 5 minutes. Synthesize Bio MCP is designed to run asynchronously, so Claude may need to wait and poll for progress before it can return the final result.
+
+## The user expected more than one comparison
+
+The current workflow supports one pairwise comparison per run. If a prompt implies more than two groups, the current behavior compares the first two groups alphabetically.
+
+If a user needs several comparisons, run them as separate prompts.
+
+## The result is too technical
+
+Ask Claude to summarize the output in simpler language, or ask for a focused interpretation such as:
+
+- the most important up-regulated genes
+- the most important down-regulated genes
+- likely biological pathways or mechanisms
+
+## The user wants the most detailed output
+
+Ask Claude for the structured JSON output or the full technical details from the completed run.
+
+## Still need help
+
+See [Privacy and Support](/mcp/privacy-and-support) for support contact options.

@@ -63,7 +63,27 @@
           },
           {
             "group": "MCP",
-            "pages": ["mcp/index"]
+            "pages": [
+              "mcp/index",
+              "mcp/overview",
+              "mcp/connect-in-claude",
+              {
+                "group": "Using the connector",
+                "pages": [
+                  "mcp/how-it-works",
+                  "mcp/usage-examples",
+                  "mcp/troubleshooting"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "mcp/tools-reference",
+                  "mcp/authentication",
+                  "mcp/privacy-and-support"
+                ]
+              }
+            ]
           },
           {
             "group": "Guides",
