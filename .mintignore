@@ -8,3 +8,6 @@ AGENTS.md
 # Draft content
 drafts/
 *.draft.mdx
+
+# Sync provenance metadata stamped by upstream sync workflows
+**/.synced-from

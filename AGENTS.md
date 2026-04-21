@@ -17,7 +17,7 @@ install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 docs.json              # Mintlify config: theme, nav, branding
 index.mdx              # landing page
 get-started/           # intro + quickstart (real content)
-python-sdk/            # APP-2302 (pysynthbio migration target)
+python-sdk/            # auto-synced from synthesizebio/pysynthbio:docs/ (do NOT edit here)
 r-sdk/                 # APP-2303 (rsynthbio migration target)
 mcp/                   # APP-2304 (MCP docs migration target)
 guides/                # APP-2305 (help.synthesize.bio migration target)
@@ -27,6 +27,19 @@ logo/, favicon.svg     # branding
 ```
 
 When adding a page, also register its slug in the appropriate `navigation.tabs[].groups[].pages` array in `docs.json`, otherwise it won't show in the sidebar.
+
+### Synced sections
+
+Some sections are owned by other repos and synced in by GitHub Actions:
+
+| Section in this repo | Source of truth                                              | Sync workflow                                                                                                                          |
+| -------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `python-sdk/`        | [`synthesizebio/pysynthbio:docs/`](https://github.com/synthesizebio/pysynthbio/tree/main/docs) | [`sync-docs-to-mintlify.yml`](https://github.com/synthesizebio/pysynthbio/blob/main/.github/workflows/sync-docs-to-mintlify.yml) |
+
+For synced sections:
+
+- **Edit content in the source repo**, not here. Sync PRs in this repo will overwrite manual edits to MDX files.
+- **`docs.json` is owned here** — the sync workflow doesn't touch it. New synced pages won't appear in the sidebar until added to `docs.json` in this repo.
 
 ## Terminology
 
