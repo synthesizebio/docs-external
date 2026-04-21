@@ -1,0 +1,45 @@
+---
+title: "Function reference"
+description: "All exported functions and constants in rsynthbio, with pointers to their in-R help."
+---
+
+`rsynthbio` is intentionally small. Authoritative function-level docs (signatures, arguments, return values, examples) ship with the package itself as standard R help pages. The fastest ways to read them:
+
+<CardGroup cols={2}>
+  <Card title="From R" icon="terminal">
+    ```r
+    ?predict_query
+    ?set_synthesize_token
+    help(package = "rsynthbio")
+    ```
+  </Card>
+  <Card title="CRAN reference manual (PDF)" icon="file-pdf" href="https://cran.r-project.org/web/packages/rsynthbio/rsynthbio.pdf">
+    The full reference for the latest CRAN release, in one file.
+  </Card>
+</CardGroup>
+
+## Exported functions
+
+### Predictions
+
+- **`predict_query(query, model_id, raw_response = FALSE)`** — Submit a query to a Synthesize Bio model and return formatted results. Run `?predict_query` for the full signature.
+- **`get_example_query(model_id)`** — Return an example query structure for a given model. Use as a template to fill in your own metadata or counts.
+- **`list_models()`** — List the model IDs your account has access to.
+
+### Authentication
+
+- **`set_synthesize_token(token = NULL, use_keyring = FALSE)`** — Set your Synthesize Bio API token for the current session, optionally persisting it in the system keyring.
+- **`load_synthesize_token_from_keyring()`** — Load a previously stored token from the system keyring into the current session.
+- **`has_synthesize_token()`** — Return `TRUE` if a token is currently set in the session environment.
+- **`clear_synthesize_token(remove_from_keyring = FALSE)`** — Clear the session token, optionally also removing it from the keyring.
+
+## Exported constants
+
+- **`API_BASE_URL`** — Base URL for the Synthesize Bio API. Defaults to `https://app.synthesize.bio` and can be overridden with the `SYNTHESIZE_API_BASE_URL` environment variable.
+- **`DEFAULT_TIMEOUT`** — Default HTTP timeout (seconds) for outbound requests.
+- **`DEFAULT_POLL_INTERVAL_SECONDS`** — Default polling interval for asynchronous model queries.
+- **`DEFAULT_POLL_TIMEOUT_SECONDS`** — Default maximum wait time for asynchronous model queries.
+
+## Source
+
+The full `rsynthbio` source is on GitHub: [synthesizebio/rsynthbio](https://github.com/synthesizebio/rsynthbio). Function definitions live under [`R/`](https://github.com/synthesizebio/rsynthbio/tree/main/R), with roxygen2 doc comments inline above each export.
