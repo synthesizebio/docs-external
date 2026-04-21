@@ -17,7 +17,7 @@ install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 docs.json              # Mintlify config: theme, nav, branding
 index.mdx              # landing page
 get-started/           # intro + quickstart (real content)
-python-sdk/            # APP-2302 (pysynthbio migration target)
+python-sdk/            # pysynthbio (Python SDK) docs
 r-sdk/                 # APP-2303 (rsynthbio migration target)
 mcp/                   # APP-2304 (MCP docs migration target)
 guides/                # APP-2305 (help.synthesize.bio migration target)

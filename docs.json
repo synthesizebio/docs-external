@@ -28,7 +28,20 @@
           },
           {
             "group": "Python SDK",
-            "pages": ["python-sdk/index"]
+            "pages": [
+              "python-sdk/index",
+              "python-sdk/installation",
+              "python-sdk/getting-started",
+              {
+                "group": "Models",
+                "pages": [
+                  "python-sdk/models/baseline",
+                  "python-sdk/models/reference-conditioning",
+                  "python-sdk/models/metadata-prediction"
+                ]
+              },
+              "python-sdk/license"
+            ]
           },
           {
             "group": "R SDK",
