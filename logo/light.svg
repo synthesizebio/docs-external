@@ -1,12 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="Synthesize Bio">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" role="img" aria-label="Synthesize Bio">
   <title>Synthesize Bio</title>
-  <g fill="none" stroke="#15803D" stroke-width="2.5" stroke-linecap="round">
-    <path d="M8 28 C 14 8, 22 8, 28 28 S 42 48, 48 28" />
-    <circle cx="8" cy="28" r="2.5" fill="#15803D" stroke="none" />
-    <circle cx="28" cy="28" r="2.5" fill="#15803D" stroke="none" />
-    <circle cx="48" cy="28" r="2.5" fill="#15803D" stroke="none" />
+  <g transform="translate(4 4) scale(0.227)" fill="#252830">
+    <path d="M160.83 92.4414C189.407 96.8546 211.285 121.557 211.286 151.37C211.285 184.303 184.588 211 151.655 211C121.841 211 97.1381 189.12 92.7261 160.542H160.83V92.4414ZM59.9165 0C89.7291 0.000205292 114.432 21.8783 118.845 50.4551H50.7427V118.559C22.1651 114.146 0.285854 89.444 0.285645 59.6309C0.285645 26.6979 26.9835 0 59.9165 0Z" />
   </g>
-  <text x="62" y="27" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#0F172A">
+  <text x="64" y="38" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="22" font-weight="600" fill="#252830" letter-spacing="-0.2">
     Synthesize Bio
   </text>
 </svg>

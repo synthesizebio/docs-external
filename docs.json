@@ -4,9 +4,9 @@
   "name": "Synthesize Bio",
   "description": "Documentation for the Synthesize Bio platform, SDKs, and integrations.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#22C55E",
-    "dark": "#15803D"
+    "primary": "#3B6297",
+    "light": "#91B0DB",
+    "dark": "#2C4A73"
   },
   "favicon": "/favicon.svg",
   "logo": {
