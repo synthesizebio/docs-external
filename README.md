@@ -1,55 +1,75 @@
-# Mintlify Starter Kit
+# Synthesize Bio Docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+Source for the public docs site, served by [Mintlify](https://mintlify.com) at:
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+- `https://<project>.mintlify.app` — Mintlify-hosted preview (auto-deployed on merge to `main`)
+- `https://docs.synthesize.bio` — custom domain, coming via APP-2306
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+The Mintlify GitHub App watches this repo's `main` branch and auto-deploys. PRs get a preview URL posted as a check.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## Project layout
 
-## AI-assisted writing
+```
+.
+  docs.json              # Mintlify config: theme, nav, branding
+  index.mdx              # landing page
+  favicon.svg
+  logo/
+    light.svg
+    dark.svg
+  get-started/           # intro + quickstart
+  python-sdk/            # filled by APP-2302 (pysynthbio migration)
+  r-sdk/                 # filled by APP-2303 (rsynthbio migration)
+  mcp/                   # filled by APP-2304 (MCP docs migration)
+  guides/                # filled by APP-2305 (help.synthesize.bio migration)
+  snippets/              # reusable MDX fragments
+  images/                # static assets
+```
 
-Set up your AI coding tool to work with Mintlify:
+## Local development
+
+Mintlify ships a CLI that renders the site locally with hot reload.
 
 ```bash
-npx skills add https://mintlify.com/docs
+npm i -g mint     # one-time; requires Node 20+
+mint dev          # serves http://localhost:3000
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+Other useful commands:
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
-npm i -g mint
+```bash
+mint broken-links   # check for broken internal/external links
+mint update         # update the CLI to the latest version
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## Adding a page
 
-```
-mint dev
-```
+1. Create `<section>/<slug>.mdx` with frontmatter:
+   ```mdx
+   ---
+   title: "Page Title"
+   description: "One-line description shown in search and meta tags."
+   ---
+   ```
+2. Add the page slug (without `.mdx`) to the appropriate `groups[].pages` array in [`docs.json`](./docs.json).
+3. Use Mintlify's [built-in MDX components](https://www.mintlify.com/docs/components) (`<Card>`, `<CardGroup>`, `<Note>`, `<Tabs>`, etc.) instead of raw HTML where possible — they pick up the theme automatically.
 
-View your local preview at `http://localhost:3000`.
+## Branding
 
-## Publishing changes
+- Primary color: `#16A34A` (set in `docs.json`)
+- Logos and favicon under [`logo/`](./logo) and [`favicon.svg`](./favicon.svg) — the current files are simple SVG placeholders. Drop in the real brand assets and they'll be picked up on the next deploy.
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+## Related Linear tickets
+
+- APP-2301 — Mintlify foundation (this PR)
+- APP-2302 — Migrate `pysynthbio` docs into `python-sdk/`
+- APP-2303 — Migrate `rsynthbio` docs into `r-sdk/`
+- APP-2304 — Migrate MCP docs into `mcp/`
+- APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
+- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment
 
 ## Need help?
 
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+- If your dev environment isn't running: `mint update` to refresh the CLI
+- If a page 404s in preview: confirm the slug is listed in `docs.json` under `navigation.tabs[].groups[].pages`
+- Mintlify reference: https://mintlify.com/docs
