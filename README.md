@@ -2,8 +2,12 @@
 
 Source for the public docs site, served by [Mintlify](https://mintlify.com) at:
 
-- `https://<project>.mintlify.app` — Mintlify-hosted preview (auto-deployed on merge to `main`)
-- `https://docs.synthesize.bio` — custom domain, coming via APP-2306
+- [`https://docs.synthesize.bio`](https://docs.synthesize.bio) — canonical production URL (custom domain, set as `seo.canonical` in `docs.json`)
+- `https://<project>.mintlify.app` — Mintlify-hosted default URL (still works as a fallback; auto-deployed on merge to `main`)
+
+The `docs` subdomain is a CNAME → `cname.mintlify-dns.com.` managed in
+the platform CDK ([`infrastructure/lib/docs-domain-stack.ts`](https://github.com/synthesizebio/platform/blob/main/infrastructure/lib/docs-domain-stack.ts)).
+Mintlify provisions the TLS cert via Vercel automatically.
 
 The Mintlify GitHub App watches this repo's `main` branch and auto-deploys. PRs get a preview URL posted as a check.
 
@@ -66,7 +70,7 @@ mint update         # update the CLI to the latest version
 - APP-2303 — Migrate `rsynthbio` docs into `r-sdk/`
 - APP-2304 — Migrate MCP docs into `mcp/`
 - APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
-- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment
+- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (this PR / DNS stack in platform)
 
 ## Need help?
 
