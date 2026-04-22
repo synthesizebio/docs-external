@@ -41,14 +41,14 @@ jobs:
               repo: platform
               # Temporary branch ref for APP-2304; switch back to main after merge.
               ref: app-2304-generated-mintlify-source
-              subdirectory: webapp/app/routes/api/mcp/docs-mintlify
+              subdirectory: docs-external
             - owner: synthesizebio
               repo: rsynthbio
               # Temporary branch ref for APP-2303; switch back to main after merge.
               ref: app-2303-generated-mintlify-source
-              subdirectory: docs-mintlify
+              subdirectory: docs-external
             - owner: synthesizebio
               repo: pysynthbio
               # Temporary branch ref for APP-2302; switch back to main after merge.
               ref: app-2302-multirepo-docs-source
-              subdirectory: docs
+              subdirectory: docs-external

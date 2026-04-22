@@ -29,11 +29,13 @@ Point Mintlify at `docs` if you want the deployed site to use the aggregated out
 
 Aggregated sections:
 
-- `platform/` is sourced from `platform/webapp/app/routes/api/mcp/docs-mintlify`
-- `rsynthbio/` is sourced from `rsynthbio/docs-mintlify`
-- `pysynthbio/` is sourced from `pysynthbio/docs`
+- `platform/` is sourced from `platform/docs-external`
+- `rsynthbio/` is sourced from `rsynthbio/docs-external`
+- `pysynthbio/` is sourced from `pysynthbio/docs-external`
 
 Because `mintlify/multirepo-action` prefixes imported docs by repo name, the MCP docs now live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
+
+For consistency, every source repo keeps the public Mintlify-consumed content in a root `docs-external/` directory.
 
 ## Local development
 
