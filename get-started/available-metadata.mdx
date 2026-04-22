@@ -1,0 +1,31 @@
+---
+title: "Available metadata"
+description: "Browse and download the metadata vocabularies that each Synthesize Bio model accepts."
+---
+
+Every model on Synthesize Bio accepts a specific set of metadata fields as inputs — things like cell type, tissue, disease state, and perturbation details. The valid values for each field (e.g. ontology IDs, cell line names) are defined by the model's vocabulary.
+
+The vocabulary depends on the **model** you're using, since different model versions and modalities (bulk vs. single-cell) accept different fields and values.
+
+## Browse vocabularies on the platform
+
+You can browse and download the vocabulary for any model you have access to at:
+
+<Card title="app.synthesize.bio/docs/vocab" icon="book" href="https://app.synthesize.bio/docs/vocab">
+  Pick a model from the dropdown to see every metadata field it accepts, with downloadable JSON files of the valid values.
+</Card>
+
+Each field links to a JSON file containing the full list of valid values. Use these lists to validate inputs before you submit a query, or to discover which ontology IDs / cell lines / tissues are supported for a given model.
+
+## From the SDKs
+
+Both SDKs let you discover models programmatically with `list_models()`. Once you have a `model_id`, head to the [vocabulary browser](https://app.synthesize.bio/docs/vocab) to see exactly which metadata that model accepts.
+
+<CardGroup cols={2}>
+  <Card title="Python: pysynthbio" icon="python" href="/python-sdk/getting-started">
+    `list_models()` and `get_example_query(model_id=...)`
+  </Card>
+  <Card title="R: rsynthbio" icon="r" href="/r-sdk/getting-started">
+    `list_models()` and `get_example_query(model_id = ...)`
+  </Card>
+</CardGroup>
