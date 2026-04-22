@@ -1,0 +1,43 @@
+name: Aggregate Mintlify docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aggregate-docs.yml"
+      - "docs.json"
+      - "index.mdx"
+      - "get-started/**"
+      - "guides/**"
+      - "snippets/**"
+      - "images/**"
+      - "logo/**"
+      - "favicon.svg"
+
+concurrency:
+  group: aggregate-mintlify-docs
+  cancel-in-progress: true
+
+jobs:
+  aggregate-docs:
+    name: Aggregate docs into docs branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out docs source
+        uses: actions/checkout@v4
+
+      - name: Aggregate source repos
+        uses: mintlify/multirepo-action@v0.15
+        with:
+          token: ${{ secrets.PUSH_TOKEN }}
+          target-branch: docs
+          subdirectory: .
+          repos: |
+            - owner: synthesizebio
+              repo: platform
+              subdirectory: webapp/app/routes/api/mcp/docs
+            # Add pysynthbio and rsynthbio once they expose Mintlify docs roots.

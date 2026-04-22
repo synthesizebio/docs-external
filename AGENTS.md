@@ -8,7 +8,8 @@ install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 - Public-facing documentation for the Synthesize Bio platform
 - Built on [Mintlify](https://mintlify.com); pages are MDX with YAML frontmatter
 - Configuration lives in [`docs.json`](./docs.json)
-- Auto-deployed by the Mintlify GitHub App on merge to `main`
+- `main` holds the shared base docs source
+- The aggregation workflow publishes the combined docs site to the `docs` branch
 - Preview locally with `mint dev`; check links with `mint broken-links`
 
 ## Project structure
@@ -16,17 +17,16 @@ install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 ```
 docs.json              # Mintlify config: theme, nav, branding
 index.mdx              # landing page
-get-started/           # intro + quickstart (real content)
-python-sdk/            # pysynthbio (Python SDK) docs
-r-sdk/                 # APP-2303 (rsynthbio migration target)
-mcp/                   # APP-2304 (MCP docs migration target)
-guides/                # APP-2305 (help.synthesize.bio migration target)
+get-started/           # shared intro + quickstart content owned here
+guides/                # shared guides owned here
 snippets/              # reusable MDX fragments
 images/                # static assets
 logo/, favicon.svg     # branding
+.github/workflows/     # aggregation workflow definitions
 ```
 
 When adding a page, also register its slug in the appropriate `navigation.tabs[].groups[].pages` array in `docs.json`, otherwise it won't show in the sidebar.
+Do not add SDK or MCP pages directly in `main`; those sections should be edited in their source repos and synced into the generated `docs` branch.
 
 ## Terminology
 
