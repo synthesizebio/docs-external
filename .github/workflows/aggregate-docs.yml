@@ -31,7 +31,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Aggregate source repos
-        uses: mintlify/multirepo-action@v0.15
+        # Pin to a revision that supports docs.json configs and per-repo subdirectories.
+        uses: mintlify/multirepo-action@2a8d0867b0cffdafe0959d1d9c497cba48987110
         with:
           token: ${{ secrets.PUSH_TOKEN }}
           target-branch: docs
