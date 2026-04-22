@@ -28,7 +28,8 @@
             "pages": [
               "index",
               "get-started/introduction",
-              "get-started/quickstart"
+              "get-started/quickstart",
+              "get-started/available-metadata"
             ]
           },
           {
