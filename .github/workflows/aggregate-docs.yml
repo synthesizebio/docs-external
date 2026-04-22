@@ -47,4 +47,8 @@ jobs:
               # Temporary branch ref for APP-2303; switch back to main after merge.
               ref: app-2303-generated-mintlify-source
               subdirectory: docs-mintlify
-            # Add pysynthbio once that repo exposes a Mintlify docs root on main.
+            - owner: synthesizebio
+              repo: pysynthbio
+              # Temporary branch ref for APP-2302; switch back to main after merge.
+              ref: app-2302-multirepo-docs-source
+              subdirectory: docs

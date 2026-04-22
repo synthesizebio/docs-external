@@ -31,9 +31,9 @@ Aggregated sections:
 
 - `platform/` is sourced from `platform/webapp/app/routes/api/mcp/docs-mintlify`
 - `rsynthbio/` is sourced from `rsynthbio/docs-mintlify`
-- `python-sdk/` will move to `pysynthbio` once that repo exposes a Mintlify docs root
+- `pysynthbio/` is sourced from `pysynthbio/docs`
 
-Because `mintlify/multirepo-action` prefixes imported docs by repo name, the MCP docs now live under `platform/` and the R SDK now lives under `rsynthbio/` in the aggregated site rather than `mcp/` and `r-sdk/`.
+Because `mintlify/multirepo-action` prefixes imported docs by repo name, the MCP docs now live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
 
 ## Local development
 
@@ -79,7 +79,7 @@ Do not add SDK or MCP content directly in `main`. Those sections should live in 
 ## Related Linear tickets
 
 - APP-2301 — Mintlify foundation (this PR)
-- APP-2302 — Migrate `pysynthbio` docs into `python-sdk/`
+- APP-2302 — Migrate `pysynthbio` docs into `pysynthbio/`
 - APP-2303 — Migrate `rsynthbio` docs into `r-sdk/`
 - APP-2304 — Migrate MCP docs into `platform/`
 - APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
