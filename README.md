@@ -2,10 +2,16 @@
 
 Source for the public docs site, served by [Mintlify](https://mintlify.com) at:
 
-- `https://<project>.mintlify.app` — Mintlify-hosted preview (auto-deployed on merge to `main`)
-- `https://docs.synthesize.bio` — custom domain, coming via APP-2306
+- [`https://docs.synthesize.bio`](https://docs.synthesize.bio) — canonical production URL (custom domain, set as `seo.canonical` in `docs.json`)
+- `https://<project>.mintlify.app` — Mintlify-hosted default URL (still works as a fallback; auto-deployed on merge to `main`)
 
-The Mintlify GitHub App watches this repo's `main` branch and auto-deploys. PRs get a preview URL posted as a check.
+The `docs` subdomain is a CNAME → `cname.mintlify-dns.com.` managed in
+the platform CDK ([`infrastructure/lib/docs-domain-stack.ts`](https://github.com/synthesizebio/platform/blob/main/infrastructure/lib/docs-domain-stack.ts)).
+Mintlify provisions the TLS cert via Vercel automatically.
+
+`main` stores the base docs source for shared pages like `index.mdx`, `get-started/`, and `guides/`.
+The multirepo aggregation workflow writes the combined site into the `docs` branch.
+Point Mintlify at `docs` if you want the deployed site to use the aggregated output.
 
 ## Project layout
 
@@ -17,14 +23,23 @@ The Mintlify GitHub App watches this repo's `main` branch and auto-deploys. PRs 
   logo/
     light.svg
     dark.svg
-  get-started/           # intro + quickstart
-  python-sdk/            # filled by APP-2302 (pysynthbio migration)
-  r-sdk/                 # filled by APP-2303 (rsynthbio migration)
-  mcp/                   # filled by APP-2304 (MCP docs migration)
-  guides/                # filled by APP-2305 (help.synthesize.bio migration)
+  get-started/           # shared intro + quickstart content owned here
+  guides/                # shared guides owned here
   snippets/              # reusable MDX fragments
   images/                # static assets
+  .github/workflows/
+    aggregate-docs.yml   # syncs docs from source repos into the docs branch
 ```
+
+Aggregated sections:
+
+- `platform/` is sourced from `platform/docs-external`
+- `rsynthbio/` is sourced from `rsynthbio/docs-external`
+- `pysynthbio/` is sourced from `pysynthbio/docs-external`
+
+Because `mintlify/multirepo-action` prefixes imported docs by repo name, the MCP docs now live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
+
+For consistency, every source repo keeps the public Mintlify-consumed content in a root `docs-external/` directory.
 
 ## Local development
 
@@ -42,6 +57,12 @@ mint broken-links   # check for broken internal/external links
 mint update         # update the CLI to the latest version
 ```
 
+If you want to preview the fully aggregated site locally, check out the generated `docs` branch after the sync workflow runs.
+
+## GitHub automation
+
+The aggregation workflow expects a `PUSH_TOKEN` repository secret with permission to push to the `docs` branch and read the source repos listed in `.github/workflows/aggregate-docs.yml`.
+
 ## Adding a page
 
 1. Create `<section>/<slug>.mdx` with frontmatter:
@@ -54,19 +75,21 @@ mint update         # update the CLI to the latest version
 2. Add the page slug (without `.mdx`) to the appropriate `groups[].pages` array in [`docs.json`](./docs.json).
 3. Use Mintlify's [built-in MDX components](https://www.mintlify.com/docs/components) (`<Card>`, `<CardGroup>`, `<Note>`, `<Tabs>`, etc.) instead of raw HTML where possible — they pick up the theme automatically.
 
+Do not add SDK or MCP content directly in `main`. Those sections should live in their source repos and flow into `docs` through the aggregation workflow.
+
 ## Branding
 
-- Primary color: `#16A34A` (set in `docs.json`)
+- Primary color: `#3B6297` (set in `docs.json`)
 - Logos and favicon under [`logo/`](./logo) and [`favicon.svg`](./favicon.svg) — the current files are simple SVG placeholders. Drop in the real brand assets and they'll be picked up on the next deploy.
 
 ## Related Linear tickets
 
 - APP-2301 — Mintlify foundation (this PR)
-- APP-2302 — Migrate `pysynthbio` docs into `python-sdk/`
+- APP-2302 — Migrate `pysynthbio` docs into `pysynthbio/`
 - APP-2303 — Migrate `rsynthbio` docs into `r-sdk/`
-- APP-2304 — Migrate MCP docs into `mcp/`
+- APP-2304 — Migrate MCP docs into `platform/`
 - APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
-- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment
+- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (this PR / DNS stack in platform)
 
 ## Need help?
 

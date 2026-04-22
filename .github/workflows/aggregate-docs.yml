@@ -1,0 +1,54 @@
+name: Aggregate Mintlify docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aggregate-docs.yml"
+      - "docs.json"
+      - "index.mdx"
+      - "get-started/**"
+      - "guides/**"
+      - "snippets/**"
+      - "images/**"
+      - "logo/**"
+      - "favicon.svg"
+
+concurrency:
+  group: aggregate-mintlify-docs
+  cancel-in-progress: true
+
+jobs:
+  aggregate-docs:
+    name: Aggregate docs into docs branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out docs source
+        uses: actions/checkout@v4
+
+      - name: Aggregate source repos
+        uses: mintlify/multirepo-action@v0.15
+        with:
+          token: ${{ secrets.PUSH_TOKEN }}
+          target-branch: docs
+          subdirectory: .
+          repos: |
+            - owner: synthesizebio
+              repo: platform
+              # Temporary branch ref for APP-2304; switch back to main after merge.
+              ref: app-2304-generated-mintlify-source
+              subdirectory: docs-external
+            - owner: synthesizebio
+              repo: rsynthbio
+              # Temporary branch ref for APP-2303; switch back to main after merge.
+              ref: app-2303-generated-mintlify-source
+              subdirectory: docs-external
+            - owner: synthesizebio
+              repo: pysynthbio
+              # Temporary branch ref for APP-2302; switch back to main after merge.
+              ref: app-2302-multirepo-docs-source
+              subdirectory: docs-external
