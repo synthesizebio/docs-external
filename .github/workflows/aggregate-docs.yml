@@ -39,7 +39,9 @@ jobs:
           repos: |
             - owner: synthesizebio
               repo: platform
-              subdirectory: webapp/app/routes/api/mcp/docs
+              # Temporary branch ref for APP-2304; switch back to main after merge.
+              ref: app-2304-generated-mintlify-source
+              subdirectory: webapp/app/routes/api/mcp/docs-mintlify
             - owner: synthesizebio
               repo: rsynthbio
               # Temporary branch ref for APP-2303; switch back to main after merge.
