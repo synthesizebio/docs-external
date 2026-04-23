@@ -3,15 +3,14 @@
 Source for the public docs site, served by [Mintlify](https://mintlify.com) at:
 
 - [`https://docs.synthesize.bio`](https://docs.synthesize.bio) — canonical production URL (custom domain, set as `seo.canonical` in `docs.json`)
-- `https://<project>.mintlify.app` — Mintlify-hosted default URL (still works as a fallback; auto-deployed on merge to `main`)
+- `https://<project>.mintlify.app` — Mintlify-hosted default URL (still works as a fallback; it reflects whichever branch Mintlify is configured to deploy, currently `docs`)
 
 The `docs` subdomain is a CNAME → `cname.mintlify-dns.com.` managed in
 the platform CDK ([`infrastructure/lib/docs-domain-stack.ts`](https://github.com/synthesizebio/platform/blob/main/infrastructure/lib/docs-domain-stack.ts)).
 Mintlify provisions the TLS cert via Vercel automatically.
 
 `main` stores the base docs source for shared pages like `index.mdx`, `get-started/`, and `guides/`.
-The multirepo aggregation workflow writes the combined site into the `docs` branch.
-Point Mintlify at `docs` if you want the deployed site to use the aggregated output.
+The aggregation workflow writes the combined site into the `docs` branch, and Mintlify deploys that generated branch.
 
 ## Project layout
 
@@ -37,7 +36,7 @@ Aggregated sections:
 - `rsynthbio/` is sourced from `rsynthbio/docs-external`
 - `pysynthbio/` is sourced from `pysynthbio/docs-external`
 
-Because `mintlify/multirepo-action` prefixes imported docs by repo name, the MCP docs now live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
+The aggregation workflow mirrors each source repo under its repo name, so the MCP docs live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
 
 For consistency, every source repo keeps the public Mintlify-consumed content in a root `docs-external/` directory.
 
@@ -61,7 +60,10 @@ If you want to preview the fully aggregated site locally, check out the generate
 
 ## GitHub automation
 
-The aggregation workflow expects a `PUSH_TOKEN` repository secret with permission to push to the `docs` branch and read the source repos listed in `.github/workflows/aggregate-docs.yml`.
+The aggregation workflow expects:
+
+- `PUSH_TOKEN` with permission to push to the generated `docs` branch
+- `SOURCE_REPO_TOKEN` with permission to read any private source repos listed in `.github/workflows/aggregate-docs.yml`
 
 ## Adding a page
 
@@ -84,12 +86,12 @@ Do not add SDK or MCP content directly in `main`. Those sections should live in 
 
 ## Related Linear tickets
 
-- APP-2301 — Mintlify foundation (this PR)
+- APP-2301 — Replace the broken docs aggregation action with the custom sync workflow
 - APP-2302 — Migrate `pysynthbio` docs into `pysynthbio/`
-- APP-2303 — Migrate `rsynthbio` docs into `r-sdk/`
+- APP-2303 — Migrate `rsynthbio` docs into `rsynthbio/`
 - APP-2304 — Migrate MCP docs into `platform/`
 - APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
-- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (this PR / DNS stack in platform)
+- APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (platform DNS stack)
 
 ## Need help?
 
