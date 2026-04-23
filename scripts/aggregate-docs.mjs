@@ -229,7 +229,10 @@ function stageAndCommit(targetDir) {
   }
 }
 
-function pushBranch(targetDir, branch) {
+function pushBranch(targetDir, branch, remoteUrl) {
+  // Reapply the authenticated remote URL before push because Git may scrub
+  // credentials from the stored origin URL after clone.
+  run("git", ["-C", targetDir, "remote", "set-url", "origin", remoteUrl]);
   run("git", ["-C", targetDir, "push", "origin", `HEAD:${branch}`], {
     stdio: "inherit",
   });
@@ -269,7 +272,7 @@ function main() {
     return;
   }
 
-  const { destination: targetDir } = prepareTargetCheckout({
+  const { destination: targetDir, remoteUrl } = prepareTargetCheckout({
     workDir: tempRoot,
     owner: targetOwner,
     repo: targetRepo,
@@ -285,7 +288,7 @@ function main() {
     return;
   }
 
-  pushBranch(targetDir, targetBranch);
+  pushBranch(targetDir, targetBranch, remoteUrl);
 }
 
 main();
