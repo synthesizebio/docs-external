@@ -132,8 +132,11 @@ function mergeDocsNavigation(main, sub, prefix) {
   return merged;
 }
 
-function cloneRepo(remoteUrl, branch, destination) {
-  const args = ["clone", "--depth=1"];
+function cloneRepo(remoteUrl, branch, destination, options = {}) {
+  const args = ["clone"];
+  if (options.depth) {
+    args.push(`--depth=${options.depth}`);
+  }
   if (branch) {
     args.push("--branch", branch);
   }
@@ -212,9 +215,10 @@ function prepareTargetCheckout({
   const remoteUrl = authUrl(owner, repo, pushToken);
 
   if (branchExists(remoteUrl, branch)) {
+    // Clone the target branch with enough history for follow-up updates.
     cloneRepo(remoteUrl, branch, destination);
   } else {
-    cloneRepo(remoteUrl, undefined, destination);
+    cloneRepo(remoteUrl, undefined, destination, { depth: 1 });
     run("git", ["-C", destination, "checkout", "--orphan", branch]);
   }
 
