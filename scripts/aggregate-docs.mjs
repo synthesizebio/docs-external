@@ -4,11 +4,17 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 function run(command, args, options = {}) {
-  return execFileSync(command, args, {
+  const result = execFileSync(command, args, {
     stdio: "pipe",
     encoding: "utf8",
     ...options,
-  }).trim();
+  });
+
+  if (typeof result !== "string") {
+    return "";
+  }
+
+  return result.trim();
 }
 
 function getRequiredEnv(name) {
