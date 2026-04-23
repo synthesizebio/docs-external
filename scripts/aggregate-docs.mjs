@@ -135,6 +135,25 @@ function cloneRepo(remoteUrl, branch, destination) {
   run("git", args);
 }
 
+function downloadRepoArchive({ owner, repo, ref, token, destination }) {
+  const archivePath = join(destination, "..", `${repo}.tar.gz`);
+  const archiveUrl = token
+    ? `https://api.github.com/repos/${owner}/${repo}/tarball/${ref}`
+    : `https://codeload.github.com/${owner}/${repo}/tar.gz/refs/heads/${ref}`;
+  const curlArgs = ["-L", "--fail"];
+
+  if (token) {
+    curlArgs.push("-H", "Accept: application/vnd.github+json");
+    curlArgs.push("-H", `Authorization: Bearer ${token}`);
+  }
+
+  curlArgs.push("-o", archivePath, archiveUrl);
+  run("curl", curlArgs);
+  run("mkdir", ["-p", destination]);
+  run("tar", ["-xzf", archivePath, "-C", destination, "--strip-components=1"]);
+  rmSync(archivePath, { force: true });
+}
+
 function composeDocs({
   workDir,
   baseSourceDir,
@@ -149,8 +168,13 @@ function composeDocs({
 
   for (const repo of repos) {
     const cloneDir = join(workDir, `clone-${repo.repo}`);
-    const remoteUrl = authUrl(repo.owner, repo.repo, sourceToken);
-    cloneRepo(remoteUrl, repo.ref, cloneDir);
+    downloadRepoArchive({
+      owner: repo.owner,
+      repo: repo.repo,
+      ref: repo.ref || "main",
+      token: sourceToken,
+      destination: cloneDir,
+    });
 
     const repoSourceDir = repo.subdirectory
       ? safeResolve(cloneDir, repo.subdirectory)
