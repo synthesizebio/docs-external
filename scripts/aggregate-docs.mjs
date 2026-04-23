@@ -139,7 +139,7 @@ function composeDocs({
   workDir,
   baseSourceDir,
   repos,
-  pushToken,
+  sourceToken,
 }) {
   const composedDir = join(workDir, "composed");
   copyDirectory(baseSourceDir, composedDir);
@@ -149,7 +149,7 @@ function composeDocs({
 
   for (const repo of repos) {
     const cloneDir = join(workDir, `clone-${repo.repo}`);
-    const remoteUrl = authUrl(repo.owner, repo.repo, pushToken);
+    const remoteUrl = authUrl(repo.owner, repo.repo, sourceToken);
     cloneRepo(remoteUrl, repo.ref, cloneDir);
 
     const repoSourceDir = repo.subdirectory
@@ -214,6 +214,7 @@ function pushBranch(targetDir, branch) {
 function main() {
   const repos = parseRepos();
   const pushToken = process.env.PUSH_TOKEN || "";
+  const sourceToken = process.env.SOURCE_REPO_TOKEN || "";
   const targetBranch = process.env.TARGET_BRANCH || "docs";
   const targetRepository = process.env.TARGET_REPOSITORY || process.env.GITHUB_REPOSITORY;
   const baseSubdirectory = process.env.BASE_SUBDIRECTORY || ".";
@@ -236,7 +237,7 @@ function main() {
     workDir: tempRoot,
     baseSourceDir,
     repos,
-    pushToken,
+    sourceToken,
   });
 
   if (dryRun) {

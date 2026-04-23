@@ -38,6 +38,7 @@ jobs:
       - name: Aggregate source repos
         env:
           PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
           TARGET_REPOSITORY: ${{ github.repository }}
           TARGET_BRANCH: docs
           BASE_SUBDIRECTORY: .
