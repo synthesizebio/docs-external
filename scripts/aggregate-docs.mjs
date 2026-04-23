@@ -243,7 +243,7 @@ function pushBranch(targetDir, branch, remoteUrl) {
   // Reapply the authenticated remote URL before push because Git may scrub
   // credentials from the stored origin URL after clone.
   run("git", ["-C", targetDir, "remote", "set-url", "origin", remoteUrl]);
-  run("git", ["-C", targetDir, "push", "origin", `HEAD:${branch}`], {
+  run("git", ["-C", targetDir, "push", "--force-with-lease", "origin", `HEAD:${branch}`], {
     stdio: "inherit",
   });
 }
