@@ -17,6 +17,7 @@ on:
       - "images/**"
       - "logo/**"
       - "favicon.svg"
+      - "scripts/**"
 
 concurrency:
   group: aggregate-mintlify-docs
@@ -26,30 +27,20 @@ jobs:
   aggregate-docs:
     name: Aggregate docs into docs branch
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
       - name: Check out docs source
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Aggregate source repos
-        # Pin to a published revision that supports docs.json configs and per-repo subdirectories.
-        uses: mintlify/multirepo-action@6f81a15088568b052142c8987bde8a1c96d808c0
-        with:
-          token: ${{ secrets.PUSH_TOKEN }}
-          target-branch: docs
-          subdirectory: .
-          repos: |
-            - owner: synthesizebio
-              repo: platform
-              # Temporary branch ref for APP-2304; switch back to main after merge.
-              ref: app-2304-generated-mintlify-source
-              subdirectory: docs-external
-            - owner: synthesizebio
-              repo: rsynthbio
-              # Temporary branch ref for APP-2303; switch back to main after merge.
-              ref: app-2303-generated-mintlify-source
-              subdirectory: docs-external
-            - owner: synthesizebio
-              repo: pysynthbio
-              # Temporary branch ref for APP-2302; switch back to main after merge.
-              ref: app-2302-multirepo-docs-source
-              subdirectory: docs-external
+        env:
+          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+          TARGET_BRANCH: docs
+          BASE_SUBDIRECTORY: .
+          AGGREGATE_REPOS: >-
+            [{"owner":"synthesizebio","repo":"platform","ref":"main","subdirectory":"docs-external"},{"owner":"synthesizebio","repo":"rsynthbio","ref":"main","subdirectory":"docs-external"},{"owner":"synthesizebio","repo":"pysynthbio","ref":"main","subdirectory":"docs-external"}]
+        run: node scripts/aggregate-docs.mjs
