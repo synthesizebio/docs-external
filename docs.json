@@ -27,7 +27,6 @@
             "group": "Get Started",
             "pages": [
               "index",
-              "get-started/introduction",
               "get-started/quickstart",
               "get-started/available-metadata"
             ]
@@ -42,14 +41,19 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Platform",
-          "href": "https://app.synthesize.bio",
-          "icon": "arrow-up-right-from-square"
+          "anchor": "Python SDK",
+          "icon": "python",
+          "href": "/pysynthbio"
         },
         {
-          "anchor": "GitHub",
-          "href": "https://github.com/synthesizebio",
-          "icon": "github"
+          "anchor": "R SDK",
+          "icon": "r",
+          "href": "/rsynthbio"
+        },
+        {
+          "anchor": "MCP",
+          "icon": "plug",
+          "href": "/platform"
         }
       ]
     }
@@ -84,6 +88,21 @@
       "github": "https://github.com/synthesizebio",
       "linkedin": "https://www.linkedin.com/company/synthesize-bio",
       "x": "https://x.com/synthesizebio"
-    }
+    },
+    "links": [
+      {
+        "header": "Links",
+        "items": [
+          {
+            "label": "Platform",
+            "href": "https://app.synthesize.bio"
+          },
+          {
+            "label": "GitHub",
+            "href": "https://github.com/synthesizebio"
+          }
+        ]
+      }
+    ]
   }
 }
