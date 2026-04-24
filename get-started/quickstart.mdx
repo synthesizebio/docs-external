@@ -1,30 +1,78 @@
 ---
 title: "Quickstart"
-description: "Make your first request to the Synthesize Bio platform."
+description: "Sign up, get an API key, and make your first request to Synthesize Bio."
 ---
 
-This page gives you the fastest path into the platform while the SDK docs move back into their source repos.
+This guide takes you from zero to a working API call in about five minutes. Pick the SDK or integration that matches your environment at the end.
+
+<Steps>
+  <Step title="Create an account">
+    Sign up at [app.synthesize.bio](https://app.synthesize.bio) and verify your email.
+  </Step>
+  <Step title="Generate an API key">
+    In the platform, open **Settings → API keys** and click **Create key**. Copy the key somewhere safe — you won't be able to view it again.
+
+    <Note>
+      Treat the key like a password. Set it as an environment variable rather than checking it into source control:
+
+      ```bash
+      export SYNTHBIO_API_KEY="sk-..."
+      ```
+    </Note>
+  </Step>
+  <Step title="Pick how you want to call the platform">
+    <Tabs>
+      <Tab title="Python (`pysynthbio`)">
+        ```bash
+        pip install pysynthbio
+        ```
+
+        ```python
+        from pysynthbio import SynthbioClient
+
+        client = SynthbioClient()  # picks up SYNTHBIO_API_KEY
+        models = client.list_models()
+        print(models[0])
+        ```
+
+        See the [Python SDK docs](/pysynthbio) for the full reference.
+      </Tab>
+      <Tab title="R (`rsynthbio`)">
+        ```r
+        install.packages("rsynthbio")
+
+        library(rsynthbio)
+        models <- list_models()
+        head(models)
+        ```
+
+        See the [R SDK docs](/rsynthbio) for the full reference.
+      </Tab>
+      <Tab title="MCP (Claude / Cursor)">
+        Configure Synthesize Bio as an MCP server in your client of choice — the [MCP setup guide](/platform) walks through Claude Desktop, Cursor, and other compatible tools.
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Make your first prediction">
+    Once `list_models()` returns results, you have a working connection. Pick a `model_id` and use `get_example_query(model_id=...)` to generate a starter request you can adapt to your data.
+
+    Need to know which metadata fields a model accepts? See [Available metadata](/get-started/available-metadata).
+  </Step>
+</Steps>
+
+## What's next?
 
 <CardGroup cols={2}>
-  <Card title="Introduction" icon="book-open" href="/get-started/introduction">
-    Start with the platform overview and docs map.
+  <Card title="Python SDK reference" icon="python" href="/pysynthbio">
+    Full `pysynthbio` reference and recipes.
   </Card>
-  <Card title="Python SDK" icon="python" href="/pysynthbio/getting-started">
-    Install `pysynthbio`, authenticate, and make your first request from Python.
-  </Card>
-  <Card title="R SDK" icon="r" href="/rsynthbio/getting-started">
-    Install `rsynthbio`, authenticate, and make your first request from R.
+  <Card title="R SDK reference" icon="r" href="/rsynthbio">
+    Full `rsynthbio` reference and recipes.
   </Card>
   <Card title="MCP setup" icon="plug" href="/platform">
     Connect Synthesize Bio to Claude, Cursor, and other MCP clients.
   </Card>
   <Card title="Guides" icon="compass" href="/guides">
-    Browse tutorials and practical workflows.
+    Workflows, tutorials, and answers to common questions.
   </Card>
 </CardGroup>
-
-## In the meantime
-
-1. Sign up for an account at [app.synthesize.bio](https://app.synthesize.bio)
-2. Generate an API key from your account settings
-3. Use the Python SDK docs, the R SDK docs, the MCP docs, or a guide page that matches your workflow
