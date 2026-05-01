@@ -32,12 +32,12 @@ The aggregation workflow writes the combined site into the `docs` branch, and Mi
 Aggregated sections:
 
 - `platform/` is sourced from `platform/docs-external`
-- `rsynthbio/` is sourced from `rsynthbio/docs-external`
+- `rsynthbio/` is generated from the public `rsynthbio` package sources during aggregation
 - `pysynthbio/` is sourced from `pysynthbio/docs-external`
 
 The aggregation workflow mirrors each source repo under its repo name, so the MCP docs live under `platform/`, the R SDK under `rsynthbio/`, and the Python SDK under `pysynthbio/` in the aggregated site rather than `mcp/`, `r-sdk/`, and `python-sdk/`.
 
-For consistency, every source repo keeps the public Mintlify-consumed content in a root `docs-external/` directory.
+For SDKs that keep authored Mintlify content in their own repos, that content lives in a root `docs-external/` directory. The R SDK is generated during aggregation from the canonical package docs in `rsynthbio`.
 
 ## Local development
 
@@ -62,7 +62,7 @@ If you want to preview the fully aggregated site locally, check out the generate
 The aggregation workflow expects:
 
 - `PUSH_TOKEN` with permission to push to the generated `docs` branch
-- `SOURCE_REPO_TOKEN` with permission to read any private source repos listed in `.github/workflows/aggregate-docs.yml`
+- `SOURCE_REPO_TOKEN` with permission to read any private source repos listed in `.github/workflows/aggregate-docs.yml`; public repos such as `rsynthbio` can be downloaded without it
 
 ## Adding a page
 
@@ -76,7 +76,7 @@ The aggregation workflow expects:
 2. Add the page slug (without `.mdx`) to the appropriate `groups[].pages` array in [`docs.json`](./docs.json).
 3. Use Mintlify's [built-in MDX components](https://www.mintlify.com/docs/components) (`<Card>`, `<CardGroup>`, `<Note>`, `<Tabs>`, etc.) instead of raw HTML where possible — they pick up the theme automatically.
 
-Do not add SDK or MCP content directly in `main`. Those sections should live in their source repos and flow into `docs` through the aggregation workflow.
+Do not add SDK or MCP content directly in `main`. Those sections should either live in their source repos or be generated from source-repo documentation during aggregation, then flow into `docs` through the aggregation workflow.
 
 ## Branding
 
@@ -91,6 +91,7 @@ Do not add SDK or MCP content directly in `main`. Those sections should live in 
 - APP-2304 — Migrate MCP docs into `platform/`
 - APP-2305 — Remove dated help center guide content from the public docs
 - APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (platform DNS stack)
+- APP-2337 — Move `rsynthbio` Mintlify doc generation out of the public package repo
 
 ## Need help?
 
