@@ -9,7 +9,7 @@ The `docs` subdomain is a CNAME → `cname.mintlify-dns.com.` managed in
 the platform CDK ([`infrastructure/lib/docs-domain-stack.ts`](https://github.com/synthesizebio/platform/blob/main/infrastructure/lib/docs-domain-stack.ts)).
 Mintlify provisions the TLS cert via Vercel automatically.
 
-`main` stores the base docs source for shared pages like `index.mdx`, `get-started/`, and `guides/`.
+`main` stores the base docs source for shared pages like `index.mdx` and `get-started/`.
 The aggregation workflow writes the combined site into the `docs` branch, and Mintlify deploys that generated branch.
 
 ## Project layout
@@ -23,7 +23,6 @@ The aggregation workflow writes the combined site into the `docs` branch, and Mi
     light.svg
     dark.svg
   get-started/           # shared intro + quickstart content owned here
-  guides/                # shared guides owned here
   snippets/              # reusable MDX fragments
   images/                # static assets
   .github/workflows/
@@ -90,7 +89,7 @@ Do not add SDK or MCP content directly in `main`. Those sections should live in 
 - APP-2302 — Migrate `pysynthbio` docs into `pysynthbio/`
 - APP-2303 — Migrate `rsynthbio` docs into `rsynthbio/`
 - APP-2304 — Migrate MCP docs into `platform/`
-- APP-2305 — Migrate `help.synthesize.bio` content into `guides/`
+- APP-2305 — Remove dated help center guide content from the public docs
 - APP-2306 — Point `docs.synthesize.bio` at the Mintlify deployment (platform DNS stack)
 
 ## Need help?

@@ -12,7 +12,6 @@ on:
       - "docs.json"
       - "index.mdx"
       - "get-started/**"
-      - "guides/**"
       - "snippets/**"
       - "images/**"
       - "logo/**"
