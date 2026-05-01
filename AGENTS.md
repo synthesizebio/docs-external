@@ -18,7 +18,6 @@ install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 docs.json              # Mintlify config: theme, nav, branding
 index.mdx              # landing page
 get-started/           # shared intro + quickstart content owned here
-guides/                # shared guides owned here
 snippets/              # reusable MDX fragments
 images/                # static assets
 logo/, favicon.svg     # branding
