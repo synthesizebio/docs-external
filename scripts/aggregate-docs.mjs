@@ -163,6 +163,21 @@ function downloadRepoArchive({ owner, repo, ref, token, destination }) {
   rmSync(archivePath, { force: true });
 }
 
+function sourceDirForRepo({ repo, cloneDir, workDir, baseSourceDir }) {
+  if (repo.generator === "rsynthbio-mintlify") {
+    const outputDir = join(workDir, `generated-${repo.repo}`);
+    const generatorPath = safeResolve(baseSourceDir, "scripts/generate-rsynthbio-mintlify-docs.py");
+    run("python3", [generatorPath, cloneDir, outputDir]);
+    return outputDir;
+  }
+
+  if (repo.generator) {
+    throw new Error(`Unknown docs generator for ${repo.owner}/${repo.repo}: ${repo.generator}`);
+  }
+
+  return repo.subdirectory ? safeResolve(cloneDir, repo.subdirectory) : cloneDir;
+}
+
 function composeDocs({
   workDir,
   baseSourceDir,
@@ -185,9 +200,12 @@ function composeDocs({
       destination: cloneDir,
     });
 
-    const repoSourceDir = repo.subdirectory
-      ? safeResolve(cloneDir, repo.subdirectory)
-      : cloneDir;
+    const repoSourceDir = sourceDirForRepo({
+      repo,
+      cloneDir,
+      workDir,
+      baseSourceDir,
+    });
     const repoConfigPath = join(repoSourceDir, "docs.json");
     if (!existsSync(repoConfigPath)) {
       throw new Error(`Subrepo docs config not found: ${repo.owner}/${repo.repo} -> ${repoConfigPath}`);

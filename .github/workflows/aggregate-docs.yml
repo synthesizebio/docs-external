@@ -42,5 +42,5 @@ jobs:
           TARGET_BRANCH: docs
           BASE_SUBDIRECTORY: .
           AGGREGATE_REPOS: >-
-            [{"owner":"synthesizebio","repo":"platform","ref":"main","subdirectory":"docs-external"},{"owner":"synthesizebio","repo":"rsynthbio","ref":"main","subdirectory":"docs-external"},{"owner":"synthesizebio","repo":"pysynthbio","ref":"main","subdirectory":"docs-external"}]
+            [{"owner":"synthesizebio","repo":"platform","ref":"main","subdirectory":"docs-external"},{"owner":"synthesizebio","repo":"rsynthbio","ref":"main","generator":"rsynthbio-mintlify"},{"owner":"synthesizebio","repo":"pysynthbio","ref":"main","subdirectory":"docs-external"}]
         run: node scripts/aggregate-docs.mjs
