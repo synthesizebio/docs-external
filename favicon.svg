@@ -1,22 +1,4 @@
-<svg width="212" height="211" viewBox="0 0 212 211" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#SvgjsClipPath1024)">
-        <path d="M160.83 92.4414C189.407 96.8546 211.285 121.557 211.286 151.37C211.285 184.303 184.588 211 151.655 211C121.841 211 97.1381 189.12 92.7261 160.542H160.83V92.4414ZM59.9165 0C89.7291 0.000205292 114.432 21.8783 118.845 50.4551H50.7427V118.559C22.1651 114.146 0.285854 89.444 0.285645 59.6309C0.285645 26.6979 26.9835 0 59.9165 0Z" fill="#252830"></path>
-    </g>
-    <defs>
-        <clipPath id="SvgjsClipPath1024">
-            <rect width="211" height="211" fill="white" transform="translate(0.285645)"></rect>
-        </clipPath>
-    </defs>
-    <style>
-        @media (prefers-color-scheme: light) {
-            :root {
-                filter: none;
-            }
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                filter: invert(100%);
-            }
-        }
-    </style>
+<svg xmlns="http://www.w3.org/2000/svg" width="182" height="182" viewBox="0 0 182 182" role="img" aria-label="Synthesize Bio">
+  <title>Synthesize Bio</title>
+  <path d="M138.155 79.6677C162.718 83.461 181.522 104.694 181.522 130.319C181.522 158.626 158.576 181.573 130.27 181.573C104.644 181.573 83.4115 162.767 79.6191 138.203H138.155V79.6677ZM51.418 0.21167C77.0421 0.211866 98.2737 19.0166 102.067 43.5789H43.5332V102.117C18.97 98.3244 0.164253 77.0922 0.164062 51.4666C0.164062 23.1595 23.1114 0.21167 51.418 0.21167Z" fill="#252830" />
 </svg>
