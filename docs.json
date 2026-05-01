@@ -43,11 +43,13 @@
         {
           "anchor": "Python SDK",
           "icon": "python",
+          "iconType": "brands",
           "href": "/pysynthbio"
         },
         {
           "anchor": "R SDK",
-          "icon": "r",
+          "icon": "r-project",
+          "iconType": "brands",
           "href": "/rsynthbio"
         },
         {
