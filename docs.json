@@ -54,7 +54,101 @@
           "href": "/platform"
         }
       ]
-    }
+    },
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "platform/index",
+          "platform/overview",
+          "platform/connect-in-claude"
+        ]
+      },
+      {
+        "group": "Using the Connector",
+        "pages": [
+          "platform/how-it-works",
+          "platform/usage-examples",
+          "platform/troubleshooting"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "platform/tools-reference",
+          "platform/authentication",
+          "platform/privacy-and-support"
+        ]
+      },
+      {
+        "group": "R SDK",
+        "pages": [
+          "rsynthbio/index",
+          "rsynthbio/installation",
+          "rsynthbio/getting-started",
+          "rsynthbio/available-metadata",
+          {
+            "group": "Models",
+            "pages": [
+              "rsynthbio/models/baseline",
+              "rsynthbio/models/reference-conditioning",
+              "rsynthbio/models/metadata-prediction"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "rsynthbio/reference",
+              {
+                "group": "Predictions",
+                "pages": [
+                  "rsynthbio/reference/predict_query",
+                  "rsynthbio/reference/get_example_query",
+                  "rsynthbio/reference/list_models"
+                ]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "rsynthbio/reference/set_synthesize_token",
+                  "rsynthbio/reference/load_synthesize_token_from_keyring",
+                  "rsynthbio/reference/has_synthesize_token",
+                  "rsynthbio/reference/clear_synthesize_token"
+                ]
+              },
+              {
+                "group": "Constants",
+                "pages": [
+                  "rsynthbio/reference/API_BASE_URL",
+                  "rsynthbio/reference/DEFAULT_TIMEOUT",
+                  "rsynthbio/reference/DEFAULT_POLL_INTERVAL_SECONDS",
+                  "rsynthbio/reference/DEFAULT_POLL_TIMEOUT_SECONDS"
+                ]
+              }
+            ]
+          },
+          "rsynthbio/license"
+        ]
+      },
+      {
+        "group": "Python SDK",
+        "pages": [
+          "pysynthbio/index",
+          "pysynthbio/installation",
+          "pysynthbio/getting-started",
+          "pysynthbio/available-metadata",
+          {
+            "group": "Models",
+            "pages": [
+              "pysynthbio/models/baseline",
+              "pysynthbio/models/reference-conditioning",
+              "pysynthbio/models/metadata-prediction"
+            ]
+          },
+          "pysynthbio/license"
+        ]
+      }
+    ]
   },
   "navbar": {
     "links": [

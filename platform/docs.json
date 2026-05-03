@@ -1,0 +1,20 @@
+{
+  "name": "Synthesize Bio MCP",
+  "description": "Customer-facing setup and usage guide for Synthesize Bio MCP, including how to connect it in Claude.",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": ["index", "overview", "connect-in-claude"]
+      },
+      {
+        "group": "Using the Connector",
+        "pages": ["how-it-works", "usage-examples", "troubleshooting"]
+      },
+      {
+        "group": "Reference",
+        "pages": ["tools-reference", "authentication", "privacy-and-support"]
+      }
+    ]
+  }
+}
