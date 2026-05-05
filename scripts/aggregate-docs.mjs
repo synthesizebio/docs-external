@@ -106,106 +106,102 @@ function prependPrefix(group, prefix) {
   };
 }
 
-const dropdownByRepo = {
+// Each source repo's content lives inside the matching top-level anchor in
+// the parent docs.json. The anchor renders as a chevron-expandable sidebar
+// item with the SDK/MCP logo on the left.
+const anchorByRepo = {
   platform: "MCP",
   pysynthbio: "Python SDK",
   rsynthbio: "R SDK",
 };
 
-function sourceDropdownName(prefix) {
-  return dropdownByRepo[prefix] || prefix;
-}
-
-function withDropdownPages(dropdown, pages) {
-  const { href: _href, ...dropdownWithoutHref } = dropdown;
-
-  return {
-    ...dropdownWithoutHref,
-    pages: [...(dropdown.pages || []), ...pages],
-  };
-}
-
-function withRootPage(group, rootPage) {
-  return {
-    ...group,
-    root: rootPage,
-    expanded: true,
-    pages: group.pages.filter((page) => page !== rootPage),
-  };
-}
-
-function groupsWithRootIndex(groups, prefix) {
-  return groups.map((group) => {
-    const rootPage = `${prefix}/index`;
-
-    if (group.pages.includes(rootPage)) {
-      return withRootPage(group, rootPage);
-    }
-
-    return group;
-  });
-}
-
-function mergeIntoSourceDropdown(merged, prefix, pages) {
-  const dropdownName = sourceDropdownName(prefix);
-  const dropdownIndex =
-    merged.dropdowns?.findIndex((dropdown) => dropdown.dropdown === dropdownName) ?? -1;
-
-  if (dropdownIndex === -1 || pages.length === 0) {
+function appendToAnchor(merged, anchorName, entries) {
+  if (entries.length === 0) {
     return false;
   }
 
-  merged.dropdowns = merged.dropdowns.map((dropdown, index) =>
-    index === dropdownIndex ? withDropdownPages(dropdown, pages) : dropdown,
+  const anchorIndex = merged.anchors?.findIndex((anchor) => anchor.anchor === anchorName) ?? -1;
+  if (anchorIndex === -1) {
+    return false;
+  }
+
+  merged.anchors = merged.anchors.map((anchor, index) =>
+    index === anchorIndex
+      ? { ...anchor, pages: [...(anchor.pages || []), ...entries] }
+      : anchor,
   );
 
   return true;
 }
 
+// Flatten a single top-level wrapper group into its child entries. The source
+// repos wrap their pages in a single group named for the SDK (e.g. "Python
+// SDK"), but that label is redundant once the content is inside the matching
+// parent anchor.
+function flattenGroup(group) {
+  if (!Array.isArray(group.pages)) {
+    return [];
+  }
+  return group.pages;
+}
+
 function mergeDocsNavigation(main, sub, prefix) {
   const merged = { ...main };
+  const anchorName = anchorByRepo[prefix];
+
+  const collectedEntries = [];
 
   if (sub.groups) {
-    const prefixedGroups = sub.groups.map((group) => prependPrefix(group, prefix));
-    const groupedPages = groupsWithRootIndex(prefixedGroups, prefix);
-    if (!mergeIntoSourceDropdown(merged, prefix, groupedPages)) {
-      merged.groups = [...(merged.groups || []), ...prefixedGroups];
+    for (const group of sub.groups) {
+      const prefixedGroup = prependPrefix(group, prefix);
+      // For repos mapped to a parent anchor, drop the wrapper group label so
+      // the SDK pages appear directly under the anchor (otherwise the sidebar
+      // would show e.g. "Python SDK > Python SDK > Installation").
+      if (anchorName) {
+        collectedEntries.push(...flattenGroup(prefixedGroup));
+      } else {
+        collectedEntries.push(prefixedGroup);
+      }
     }
   }
 
   if (sub.pages) {
-    const prefixedPages = sub.pages.map((page) => `${prefix}/${page}`);
-    if (!mergeIntoSourceDropdown(merged, prefix, prefixedPages)) {
-      merged.pages = [...(merged.pages || []), ...prefixedPages];
+    for (const page of sub.pages) {
+      collectedEntries.push(`${prefix}/${page}`);
     }
   }
 
   if (sub.languages || sub.versions || sub.tabs || sub.dropdowns || sub.anchors) {
-    const fallbackGroup = {
-      group: prefix,
-      pages: [],
-    };
-
     for (const collection of [sub.languages, sub.versions, sub.tabs, sub.dropdowns, sub.anchors]) {
       for (const item of collection || []) {
         if (item.pages) {
-          fallbackGroup.pages.push(...item.pages.map((page) => `${prefix}/${page}`));
+          collectedEntries.push(...item.pages.map((page) => `${prefix}/${page}`));
         }
         if (item.groups) {
           for (const group of item.groups) {
-            fallbackGroup.pages.push(prependPrefix(group, prefix));
+            collectedEntries.push(prependPrefix(group, prefix));
           }
         }
       }
     }
-
-    if (fallbackGroup.pages.length > 0) {
-      if (!mergeIntoSourceDropdown(merged, prefix, fallbackGroup.pages)) {
-        merged.groups = [...(merged.groups || []), fallbackGroup];
-      }
-    }
   }
 
+  if (collectedEntries.length === 0) {
+    return merged;
+  }
+
+  if (anchorName && appendToAnchor(merged, anchorName, collectedEntries)) {
+    return merged;
+  }
+
+  // Fallback for repos not mapped to an anchor: surface their content as a
+  // labeled group at the bottom of the navigation so it remains discoverable
+  // instead of being silently dropped.
+  const fallbackGroup = {
+    group: prefix,
+    pages: collectedEntries,
+  };
+  merged.groups = [...(merged.groups || []), fallbackGroup];
   return merged;
 }
 

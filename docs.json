@@ -19,34 +19,33 @@
     }
   },
   "navigation": {
-    "dropdowns": [
+    "anchors": [
       {
-        "dropdown": "Python SDK",
-        "icon": "python",
-        "iconType": "brands",
-        "href": "/pysynthbio"
-      },
-      {
-        "dropdown": "R SDK",
-        "icon": "r-project",
-        "iconType": "brands",
-        "href": "/rsynthbio"
-      },
-      {
-        "dropdown": "MCP",
-        "icon": "plug",
-        "href": "/platform"
-      }
-    ],
-    "groups": [
-      {
-        "group": "Get Started",
+        "anchor": "Get Started",
+        "icon": "play",
         "pages": [
           "index",
           "get-started/quickstart",
           "get-started/available-metadata",
           "get-started/data-preprocessing"
         ]
+      },
+      {
+        "anchor": "Python SDK",
+        "icon": "python",
+        "iconType": "brands",
+        "pages": []
+      },
+      {
+        "anchor": "R SDK",
+        "icon": "r-project",
+        "iconType": "brands",
+        "pages": []
+      },
+      {
+        "anchor": "MCP",
+        "icon": "plug",
+        "pages": []
       }
     ]
   },
