@@ -125,6 +125,27 @@ function withAnchorPages(anchor, pages) {
   };
 }
 
+function withRootPage(group, rootPage) {
+  return {
+    ...group,
+    root: rootPage,
+    expanded: true,
+    pages: group.pages.filter((page) => page !== rootPage),
+  };
+}
+
+function groupsWithRootIndex(groups, prefix) {
+  return groups.map((group) => {
+    const rootPage = `${prefix}/index`;
+
+    if (group.pages.includes(rootPage)) {
+      return withRootPage(group, rootPage);
+    }
+
+    return group;
+  });
+}
+
 function mergeIntoSourceAnchor(merged, prefix, pages) {
   const anchorName = sourceAnchorName(prefix);
   const anchorIndex = merged.anchors?.findIndex((anchor) => anchor.anchor === anchorName) ?? -1;
@@ -145,7 +166,8 @@ function mergeDocsNavigation(main, sub, prefix) {
 
   if (sub.groups) {
     const prefixedGroups = sub.groups.map((group) => prependPrefix(group, prefix));
-    if (!mergeIntoSourceAnchor(merged, prefix, prefixedGroups)) {
+    const groupedPages = groupsWithRootIndex(prefixedGroups, prefix);
+    if (!mergeIntoSourceAnchor(merged, prefix, groupedPages)) {
       merged.groups = [...(merged.groups || []), ...prefixedGroups];
     }
   }
