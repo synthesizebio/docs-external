@@ -19,18 +19,13 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "index",
-              "get-started/quickstart",
-              "get-started/available-metadata"
-            ]
-          }
+        "group": "Get Started",
+        "pages": [
+          "index",
+          "get-started/quickstart",
+          "get-started/available-metadata"
         ]
       }
     ],
