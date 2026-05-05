@@ -24,7 +24,7 @@ logo/, favicon.svg     # branding
 .github/workflows/     # aggregation workflow definitions
 ```
 
-When adding a page, also register its slug in the appropriate `navigation.tabs[].groups[].pages` array in `docs.json`, otherwise it won't show in the sidebar.
+When adding a page, also register its slug in the appropriate `navigation.groups[].pages` array in `docs.json`, otherwise it won't show in the sidebar.
 Do not add SDK or MCP pages directly in `main`; those sections should be edited in their source repos and synced into the generated `docs` branch.
 
 ## Terminology

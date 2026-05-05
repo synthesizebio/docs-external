@@ -73,7 +73,7 @@ The aggregation workflow expects:
    description: "One-line description shown in search and meta tags."
    ---
    ```
-2. Add the page slug (without `.mdx`) to the appropriate `groups[].pages` array in [`docs.json`](./docs.json).
+2. Add the page slug (without `.mdx`) to the appropriate `navigation.groups[].pages` array in [`docs.json`](./docs.json).
 3. Use Mintlify's [built-in MDX components](https://www.mintlify.com/docs/components) (`<Card>`, `<CardGroup>`, `<Note>`, `<Tabs>`, etc.) instead of raw HTML where possible — they pick up the theme automatically.
 
 Do not add SDK or MCP content directly in `main`. Those sections should live in their source repos and flow into `docs` through the aggregation workflow.
