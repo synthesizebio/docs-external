@@ -19,42 +19,34 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "anchors": [
       {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "index",
-              "get-started/quickstart",
-              "get-started/available-metadata"
-            ]
-          }
+        "anchor": "Get Started",
+        "icon": "book-open",
+        "pages": [
+          "index",
+          "get-started/quickstart",
+          "get-started/available-metadata"
         ]
+      },
+      {
+        "anchor": "Python SDK",
+        "icon": "python",
+        "iconType": "brands",
+        "href": "/pysynthbio"
+      },
+      {
+        "anchor": "R SDK",
+        "icon": "r-project",
+        "iconType": "brands",
+        "href": "/rsynthbio"
+      },
+      {
+        "anchor": "MCP",
+        "icon": "plug",
+        "href": "/platform"
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Python SDK",
-          "icon": "python",
-          "iconType": "brands",
-          "href": "/pysynthbio"
-        },
-        {
-          "anchor": "R SDK",
-          "icon": "r-project",
-          "iconType": "brands",
-          "href": "/rsynthbio"
-        },
-        {
-          "anchor": "MCP",
-          "icon": "plug",
-          "href": "/platform"
-        }
-      ]
-    }
+    ]
   },
   "navbar": {
     "links": [
