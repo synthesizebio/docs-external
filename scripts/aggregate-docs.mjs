@@ -106,22 +106,22 @@ function prependPrefix(group, prefix) {
   };
 }
 
-const anchorByRepo = {
+const dropdownByRepo = {
   platform: "MCP",
   pysynthbio: "Python SDK",
   rsynthbio: "R SDK",
 };
 
-function sourceAnchorName(prefix) {
-  return anchorByRepo[prefix] || prefix;
+function sourceDropdownName(prefix) {
+  return dropdownByRepo[prefix] || prefix;
 }
 
-function withAnchorPages(anchor, pages) {
-  const { href: _href, ...anchorWithoutHref } = anchor;
+function withDropdownPages(dropdown, pages) {
+  const { href: _href, ...dropdownWithoutHref } = dropdown;
 
   return {
-    ...anchorWithoutHref,
-    pages: [...(anchor.pages || []), ...pages],
+    ...dropdownWithoutHref,
+    pages: [...(dropdown.pages || []), ...pages],
   };
 }
 
@@ -146,16 +146,17 @@ function groupsWithRootIndex(groups, prefix) {
   });
 }
 
-function mergeIntoSourceAnchor(merged, prefix, pages) {
-  const anchorName = sourceAnchorName(prefix);
-  const anchorIndex = merged.anchors?.findIndex((anchor) => anchor.anchor === anchorName) ?? -1;
+function mergeIntoSourceDropdown(merged, prefix, pages) {
+  const dropdownName = sourceDropdownName(prefix);
+  const dropdownIndex =
+    merged.dropdowns?.findIndex((dropdown) => dropdown.dropdown === dropdownName) ?? -1;
 
-  if (anchorIndex === -1 || pages.length === 0) {
+  if (dropdownIndex === -1 || pages.length === 0) {
     return false;
   }
 
-  merged.anchors = merged.anchors.map((anchor, index) =>
-    index === anchorIndex ? withAnchorPages(anchor, pages) : anchor,
+  merged.dropdowns = merged.dropdowns.map((dropdown, index) =>
+    index === dropdownIndex ? withDropdownPages(dropdown, pages) : dropdown,
   );
 
   return true;
@@ -167,14 +168,14 @@ function mergeDocsNavigation(main, sub, prefix) {
   if (sub.groups) {
     const prefixedGroups = sub.groups.map((group) => prependPrefix(group, prefix));
     const groupedPages = groupsWithRootIndex(prefixedGroups, prefix);
-    if (!mergeIntoSourceAnchor(merged, prefix, groupedPages)) {
+    if (!mergeIntoSourceDropdown(merged, prefix, groupedPages)) {
       merged.groups = [...(merged.groups || []), ...prefixedGroups];
     }
   }
 
   if (sub.pages) {
     const prefixedPages = sub.pages.map((page) => `${prefix}/${page}`);
-    if (!mergeIntoSourceAnchor(merged, prefix, prefixedPages)) {
+    if (!mergeIntoSourceDropdown(merged, prefix, prefixedPages)) {
       merged.pages = [...(merged.pages || []), ...prefixedPages];
     }
   }
@@ -199,7 +200,7 @@ function mergeDocsNavigation(main, sub, prefix) {
     }
 
     if (fallbackGroup.pages.length > 0) {
-      if (!mergeIntoSourceAnchor(merged, prefix, fallbackGroup.pages)) {
+      if (!mergeIntoSourceDropdown(merged, prefix, fallbackGroup.pages)) {
         merged.groups = [...(merged.groups || []), fallbackGroup];
       }
     }
