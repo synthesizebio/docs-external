@@ -4,11 +4,25 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 function run(command, args, options = {}) {
-  const result = execFileSync(command, args, {
-    stdio: "pipe",
-    encoding: "utf8",
-    ...options,
-  });
+  let result;
+  try {
+    result = execFileSync(command, args, {
+      stdio: "pipe",
+      encoding: "utf8",
+      ...options,
+    });
+  } catch (error) {
+    const stderr = error.stderr?.toString?.() || "";
+    const redactedArgs = args
+      .map((arg) =>
+        arg
+          .replace(/Authorization: Bearer \S+/g, "Authorization: Bearer [redacted]")
+          .replace(/x-access-token:[^@]+@/g, "x-access-token:[redacted]@"),
+      )
+      .join(" ");
+
+    throw new Error(`Command failed: ${command} ${redactedArgs}${stderr ? `\n${stderr}` : ""}`);
+  }
 
   if (typeof result !== "string") {
     return "";
@@ -92,17 +106,55 @@ function prependPrefix(group, prefix) {
   };
 }
 
+const anchorByRepo = {
+  platform: "MCP",
+  pysynthbio: "Python SDK",
+  rsynthbio: "R SDK",
+};
+
+function sourceAnchorName(prefix) {
+  return anchorByRepo[prefix] || prefix;
+}
+
+function withAnchorPages(anchor, pages) {
+  const { href: _href, ...anchorWithoutHref } = anchor;
+
+  return {
+    ...anchorWithoutHref,
+    pages: [...(anchor.pages || []), ...pages],
+  };
+}
+
+function mergeIntoSourceAnchor(merged, prefix, pages) {
+  const anchorName = sourceAnchorName(prefix);
+  const anchorIndex = merged.anchors?.findIndex((anchor) => anchor.anchor === anchorName) ?? -1;
+
+  if (anchorIndex === -1 || pages.length === 0) {
+    return false;
+  }
+
+  merged.anchors = merged.anchors.map((anchor, index) =>
+    index === anchorIndex ? withAnchorPages(anchor, pages) : anchor,
+  );
+
+  return true;
+}
+
 function mergeDocsNavigation(main, sub, prefix) {
   const merged = { ...main };
 
   if (sub.groups) {
     const prefixedGroups = sub.groups.map((group) => prependPrefix(group, prefix));
-    merged.groups = [...(merged.groups || []), ...prefixedGroups];
+    if (!mergeIntoSourceAnchor(merged, prefix, prefixedGroups)) {
+      merged.groups = [...(merged.groups || []), ...prefixedGroups];
+    }
   }
 
   if (sub.pages) {
     const prefixedPages = sub.pages.map((page) => `${prefix}/${page}`);
-    merged.pages = [...(merged.pages || []), ...prefixedPages];
+    if (!mergeIntoSourceAnchor(merged, prefix, prefixedPages)) {
+      merged.pages = [...(merged.pages || []), ...prefixedPages];
+    }
   }
 
   if (sub.languages || sub.versions || sub.tabs || sub.dropdowns || sub.anchors) {
@@ -125,7 +177,9 @@ function mergeDocsNavigation(main, sub, prefix) {
     }
 
     if (fallbackGroup.pages.length > 0) {
-      merged.groups = [...(merged.groups || []), fallbackGroup];
+      if (!mergeIntoSourceAnchor(merged, prefix, fallbackGroup.pages)) {
+        merged.groups = [...(merged.groups || []), fallbackGroup];
+      }
     }
   }
 
