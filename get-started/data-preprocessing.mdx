@@ -1,0 +1,61 @@
+---
+title: "Public dataset preprocessing"
+description: "Learn how Synthesize Bio sources, processes, and quality-checks public bulk RNA-seq datasets."
+---
+
+Synthesize Bio uses public RNA-seq datasets to support model training and platform workflows. This page summarizes how those datasets are selected, processed, and quality-checked before they appear in the platform.
+
+## Data sources
+
+All bulk RNA-seq data is sourced from the NCBI Sequence Read Archive ([SRA](https://www.ncbi.nlm.nih.gov/sra)).
+
+We select samples that meet these criteria:
+
+- Illumina sequencing platform
+- Transcriptomic library source
+- Predicted bulk RNA-seq, not single-cell
+- No fractionation library selection
+
+## Expression data processing
+
+Synthesize Bio uses pseudoalignment to quantify transcript-level and gene-level abundance from FASTQ files.
+
+When multiple runs correspond to the same sample, we combine the FASTQ files before processing. Reads are trimmed for adapters and sequence quality using `fastp`. Trimmed reads are quantified to genes and transcripts with `kallisto` v0.50.1 against the GRCh38 human or GRCm39 mouse reference genome and the Ensembl r111 transcriptome. Estimated transcript counts are then summed to the gene level based on the transcriptome definition.
+
+## Quality control
+
+We use a simple quality-control process across RNA-seq processing stages:
+
+- Use `fastp` to evaluate read quality, trim reads, and capture the duplication rate.
+- Calculate the percent pseudoaligned from `kallisto`.
+- Calculate the total number of genes with counts greater than 0.
+
+In sample selection, we provide a quality flag. The cutoffs are intentionally liberal, so you should compare them against expectations for the protocol used in a study.
+
+Data is flagged for these reasons:
+
+- Percent aligned reads below 50%
+- Duplication rate above 80%
+- Fewer than 10,000 genes with counts greater than 0
+
+## How to interpret quality flags
+
+The best cutoffs depend on the RNA-seq protocol and organism. Total RNA, poly(A)-selected RNA, stranded protocols, and non-stranded protocols can have different expected quality profiles.
+
+High duplication rates may indicate over-amplification during PCR steps or poor initial RNA input quality. Higher duplication rates may still be acceptable for some protocols, such as low-input workflows.
+
+The number of detected non-zero genes depends on sample complexity, tissue or cell type, and sequencing depth.
+
+## Metadata curation
+
+Sample-level annotation is curated through a semi-automated Synthesize Bio process. We curate 15 fields, such as tissue, sex, and disease, and map values to ontologies when available.
+
+We do not manually review every harmonized metadata result. Review metadata for accuracy when you need high confidence in a specific sample or study.
+
+## References
+
+1. [fastp](https://github.com/OpenGene/fastp)
+2. Shifu Chen. 2023. Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp. iMeta 2: e107. [https://doi.org/10.1002/imt2.107](https://doi.org/10.1002/imt2.107)
+3. [Ensembl](https://useast.ensembl.org/index.html)
+4. [kallisto](https://github.com/pachterlab/kallisto)
+5. NL Bray, H Pimentel, P Melsted, and L Pachter. 2016. Near-optimal probabilistic RNA-seq quantification. Nature Biotechnology 34, 525-527. [https://www.nature.com/articles/nbt.3519](https://www.nature.com/articles/nbt.3519)

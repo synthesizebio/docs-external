@@ -26,7 +26,8 @@
         "pages": [
           "index",
           "get-started/quickstart",
-          "get-started/available-metadata"
+          "get-started/available-metadata",
+          "get-started/data-preprocessing"
         ]
       },
       {

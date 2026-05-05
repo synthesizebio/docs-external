@@ -4,11 +4,25 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 function run(command, args, options = {}) {
-  const result = execFileSync(command, args, {
-    stdio: "pipe",
-    encoding: "utf8",
-    ...options,
-  });
+  let result;
+  try {
+    result = execFileSync(command, args, {
+      stdio: "pipe",
+      encoding: "utf8",
+      ...options,
+    });
+  } catch (error) {
+    const stderr = error.stderr?.toString?.() || "";
+    const redactedArgs = args
+      .map((arg) =>
+        arg
+          .replace(/Authorization: Bearer \S+/g, "Authorization: Bearer [redacted]")
+          .replace(/x-access-token:[^@]+@/g, "x-access-token:[redacted]@"),
+      )
+      .join(" ");
+
+    throw new Error(`Command failed: ${command} ${redactedArgs}${stderr ? `\n${stderr}` : ""}`);
+  }
 
   if (typeof result !== "string") {
     return "";
