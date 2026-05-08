@@ -1,0 +1,40 @@
+/*
+  Site chrome (loaded via import in MDX). Targets Mintlify layout hooks documented at:
+  https://www.mintlify.com/docs/customize/custom-scripts
+
+  Sidebar: border below anchor row — first page group is the ul.sidebar-group immediately after ul.list-none.
+  Do not use ul.sidebar-group:first-of-type — the first ul sibling is the anchor row, not this group.
+*/
+
+/*
+  Navbar CTA (`bg-primary-dark` + `text-white`): Mintlify’s `--primary-dark` is often the pale
+  lavender—fine for tints, poor contrast under white labels. Use the solid brand purple for fills.
+  docs.json colors.primary #503E6C → RGB channels 80 62 108.
+*/
+:root {
+	--primary-dark: 80 62 108;
+}
+
+/*
+  Dark mode: Mintlify/Tailwind use space-separated RGB in `rgb(var(--token) / …)`.
+
+  - `--primary` — general primary accents.
+  - `--primary-light` — used by utilities like `text-primary-light` and `bg-primary-light/10`
+    (sidebar labels, pills). Override this if those stay too dark while `--primary` looks fine.
+
+  Tailwind “class” dark mode: `.dark` is often on an inner wrapper, not always `<html>`.
+
+  Tune RGB triplets (#D4CCE0 → 212 204 224); bump channels for brighter body/nav text.
+*/
+html.dark,
+.dark,
+.mint-dark {
+	--primary: 212 204 224;
+	--primary-light: 212 204 224;
+}
+
+#navigation-items > ul.list-none + ul.sidebar-group {
+	padding-top: 1rem;
+	margin-top: 1rem;
+	border-top: 2px solid color-mix(in srgb, currentColor 14%, transparent);
+}

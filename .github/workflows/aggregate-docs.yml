@@ -16,6 +16,7 @@ on:
       - "images/**"
       - "logo/**"
       - "favicon.svg"
+      - "style.css"
       - "scripts/**"
 
 concurrency:
