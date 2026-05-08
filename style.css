@@ -38,3 +38,89 @@ html.dark,
 	margin-top: 1rem;
 	border-top: 2px solid color-mix(in srgb, currentColor 14%, transparent);
 }
+
+/*
+  Homepage (`/`): frontmatter `title` renders as #page-title above MDX. We hide it so the hero H1
+  inside <Columns> aligns left with the Python/R panel on the right (see index.mdx).
+*/
+html[data-current-path="/"] #page-title {
+	display: none !important;
+}
+
+/*
+  Homepage (`/`): `mode: center` uses peer-[.is-center]:max-w-3xl (~768px). Override with the same
+  max width as Tailwind `max-w-8xl` (88rem / 1408px), centered — matches Mintlify’s peer layout.
+*/
+html[data-current-path="/"] #body-content {
+	max-width: none !important;
+	width: 100% !important;
+}
+
+html[data-current-path="/"] #content-area,
+html[data-current-path="/"] #content,
+html[data-current-path="/"] mdx-content {
+	max-width: 100% !important;
+	width: 100% !important;
+}
+
+/* max-w-8xl → max-width: 88rem; min() keeps it responsive below ~1408px viewports */
+html[data-current-path="/"]
+[class*="scroll-mt"][class*="peer-[.is-center]:max-w-3xl"],
+html[data-current-path="/"] footer > div {
+	max-width: min(100%, 1200px) !important;
+	width: 100% !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	box-sizing: border-box !important;
+}
+
+html[data-current-path="/"] header {
+	display: none;
+}
+
+/* Inner column: fill the 8xl shell (overrides peer max-w-6xl on last child) */
+html[data-current-path="/"] [class*="scroll-mt"][class*="peer-"]
+	> div:last-child {
+	max-width: 100% !important;
+}
+
+/* hide mintlify link */
+html footer > div > div:not(:first-child) {
+	display: none;
+}
+
+.card > div.flex {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.card > div.flex h2.text-base {
+	font-size: 1rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
+}
+
+:has([data-floating-buttons])
+	> [data-component-part="code-block-root"]
+	pre
+	> code {
+	padding-right: 0 !important;
+}
+
+#python.tabs,
+#r.tabs {
+	position: relative;
+
+	ul {
+		position: absolute;
+		top: 0;
+		z-index: 1;
+		padding-left: 1rem;
+	}
+
+	ul + div .code-block {
+		padding-top: 3rem;
+	}
+}
