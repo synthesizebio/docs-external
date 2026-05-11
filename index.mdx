@@ -17,7 +17,7 @@ Generative models for human gene expression — predict bulk and single-cell pro
 </div>
 
 <div className="text-lg mt-6">
-Available through Python and R SDKs, our Claude MCP connector, and the web.
+Available through Python and R SDKs, MCP-compatible tools, and the web.
 </div>
 
 <CardGroup cols={3} className="mt-6">
@@ -67,32 +67,32 @@ Available through Python and R SDKs, our Claude MCP connector, and the web.
 
 <CardGroup cols={4} className="mt-8">
   <Card href="/pysynthbio">
-    <div className="dark:text-white font-semibold flex gap-2">
-      <Icon icon="code" size={24} />
+    <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
+      <img src="/images/entrypoint-python.svg" alt="Python logo" className="my-0 size-6 shrink-0" />
       <span>Python SDK</span>
     </div>
-    Use **pysynthbio** to call the platform from your notebooks and pipelines. Jump to the [Python SDK](/pysynthbio) or start from the [Quickstart](/get-started/quickstart).
+    Use **pysynthbio** to predict gene expression from your Python notebooks and pipelines. Jump to the [Python SDK](/pysynthbio) or start from the [Quickstart](/get-started/quickstart).
   </Card>
   <Card href="/rsynthbio">
-    <div className="dark:text-white font-semibold flex gap-2">
-      <Icon icon="code" size={24} />
+    <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
+      <img src="/images/entrypoint-r.svg" alt="R logo" className="my-0 size-6 shrink-0" />
       <span>R SDK</span>
     </div>
-    Use **rysynthbio** to call the platform from your notebooks and pipelines. Jump to the [R SDK](/rsynthbio) or start from the [Quickstart](/get-started/quickstart).
+    Use **rsynthbio** to predict gene expression from your R notebooks and pipelines. Jump to the [R SDK](/rsynthbio) or start from the [Quickstart](/get-started/quickstart).
   </Card>
   <Card href="/platform">
-    <div className="dark:text-white font-semibold flex gap-2">
-      <Icon icon="plug" size={24} />
-      <span>Claude (MCP)</span>
+    <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
+      <img src="/images/entrypoint-mcp.svg" alt="MCP logo" className="my-0 size-6 shrink-0" />
+      <span>MCP</span>
     </div>
-    Use our Claude connector to generate and analyze gene expression using natural language in your Claude.ai chats.
+    Use MCP-compatible AI tools to predict gene expression and chat about your results.
   </Card>
   <Card href="https://app.synthesize.bio">
-    <div className="dark:text-white font-semibold flex gap-2">
-      <Icon icon="globe" size={24} />
-      <span>Web</span>
+    <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
+      <img src="/images/entrypoint-platform.svg" alt="Synthesize Bio logo" className="my-0 size-6 shrink-0" />
+      <span>Platform</span>
     </div>
-    Low- and No-code exploration in the browser — no local install required.
+    Low- and no-code exploration in the browser — no local install required.
   </Card>
 </CardGroup>
 
