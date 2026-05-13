@@ -1,0 +1,260 @@
+---
+title: Tools Reference
+description: Complete reference for every tool exposed by the Synthesize Bio MCP server.
+---
+
+# Tools Reference
+
+The MCP server exposes five tools. A typical analysis uses three of them in
+sequence — resolve metadata, start the analysis, then poll for results. The
+remaining two are utilities for downloading the raw counts data and
+annotating gene IDs.
+
+## resolve_sample_metadata
+
+Resolves a natural-language experiment description into structured sample groups
+for downstream analysis. Always call this **before** `analyze_gene_expression`.
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `prompt` | string | Yes | Natural-language description of the comparison, e.g. `"heart vs liver"` |
+| `modality` | `"bulk"` \| `"singleCell"` | No | Sequencing modality. Defaults to `"bulk"`. |
+| `resolution_id` | string (UUID) | No | Poll a previous resolution that returned `"resolving"` status. |
+
+### Response
+
+Returns one of three shapes depending on status:
+
+**Complete** — metadata extraction succeeded; review before proceeding.
+
+```json
+{
+  "status": "complete",
+  "resolution_id": "uuid",
+  "groups": [ ... ],
+  "warnings": [ ... ],
+  "messages": [ ... ]
+}
+```
+
+**Resolving** — extraction is still running; call again with the same
+`resolution_id`.
+
+```json
+{
+  "status": "resolving",
+  "resolution_id": "uuid",
+  "message": "Still resolving metadata..."
+}
+```
+
+**Failed** — extraction could not complete.
+
+```json
+{
+  "status": "failed",
+  "error": "Description of the failure"
+}
+```
+
+### Warnings
+
+The `warnings` array flags issues such as drugs or compounds that were not found
+in the ontology. Review warnings before proceeding — they may indicate a
+misspelling or an unsupported perturbation.
+
+---
+
+## analyze_gene_expression
+
+Starts the differential gene expression analysis pipeline from a confirmed
+resolution.
+
+<Warning>
+You must call `resolve_sample_metadata` first and confirm the resolved groups
+before calling this tool.
+</Warning>
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `resolution_id` | string (UUID) | Yes | The `resolution_id` from a confirmed `resolve_sample_metadata` call. |
+
+### Response
+
+```json
+{
+  "job_id": "uuid",
+  "message": "Analysis started"
+}
+```
+
+After receiving the `job_id`, call `get_analysis_results` immediately to begin
+polling.
+
+---
+
+## get_analysis_results
+
+Polls the status of a running analysis. Each call waits server-side for up to
+approximately 40 seconds and may return earlier if progress is detected. Call
+this immediately after `analyze_gene_expression` and again after each response —
+no client-side delay is needed.
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `job_id` | string | Yes | The `job_id` returned by `analyze_gene_expression`. |
+
+### Response
+
+**Running** — the pipeline is still executing. Call again immediately.
+
+```json
+{
+  "status": "running",
+  "step": "gem_model",
+  "message": "[GENE MODEL] Running inference...",
+  "steps_completed": []
+}
+```
+
+**Complete** — the pipeline finished successfully. The response is a Markdown
+summary that inlines the analysis metadata, a link to the platform dataset
+(when one has been provisioned), and a fenced ```` ```json ```` block holding
+up to 1,000 of the most significant differentially expressed genes returned
+by the backend. Parse the JSON block directly to drive downstream analysis or
+visualization (e.g. a volcano plot with x = `log2FoldChange`, y = -log10(`padj`)).
+
+**Failed** — the pipeline encountered an error.
+
+```json
+{
+  "status": "failed",
+  "error": "Description of the failure",
+  "failure_kind": "unsupported_query",
+  "steps_completed": ["gem_model"],
+  "user_action_required": true,
+  "suggested_queries": ["..."]
+}
+```
+
+### Pipeline stages
+
+The analysis moves through two major computation stages:
+
+1. **GEM model** (`gem_model`) — AI-powered gene expression model inference for
+   the requested sample groups.
+2. **Differential expression** (`diff_expr`) — Welch's t-test with
+   Benjamini-Hochberg false discovery rate correction on the top 10,000 most
+   variable genes.
+
+### Result shape
+
+When the pipeline completes, the response embeds the analysis summary in
+Markdown and a fenced ```` ```json ```` block with up to 1,000 of the most
+significant gene-level results. The summary fields (`ok`, `reference_level`,
+`test_level`, `total_samples`, `total_genes_tested`, `significant_genes`,
+`significant_up`, `significant_down`) are rendered as a Markdown bullet list;
+the gene-level array is the canonical structured payload for downstream LLM
+consumption:
+
+```json
+{
+  "results": [
+    {
+      "gene_id": "ENSG00000141510",
+      "gene_symbol": "TP53",
+      "log2FoldChange": 2.1,
+      "pvalue": 0.0001,
+      "padj": 0.001,
+      "direction": "up",
+      "significant": true
+    }
+  ]
+}
+```
+
+<Note>
+The analysis performs one pairwise comparison. With exactly two groups this is
+the full comparison. With three or more groups the analysis compares the first
+two alphabetically — remaining groups are ignored.
+</Note>
+
+The platform dataset link returned alongside the results is the canonical
+place to view, edit metadata, share, or download the underlying counts.
+
+---
+
+## get_counts_data_url
+
+Returns a presigned download URL for the raw gene expression counts data
+generated by a completed analysis job. The file is large (tens of MB) and
+should be processed with external tools such as `curl` or Python — not loaded
+into the conversation.
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `job_id` | string | Yes | The `job_id` from a completed analysis. |
+
+### Response
+
+Returns a presigned URL (valid for 1 hour), the modality, sample group names,
+sample counts per group, and documentation of the data format.
+
+### Data format
+
+The downloaded JSON file contains:
+
+```json
+{
+  "gene_order": ["ENSG00000141510", "..."],
+  "outputs": [
+    {
+      "counts": [0.0, 1.2, "..."],
+      "metadata": { "..." }
+    }
+  ],
+  "model_version": "..."
+}
+```
+
+- `gene_order` — array of ~20,000 Ensembl gene IDs.
+- `outputs` — one entry per sample, with `counts` aligned to `gene_order`.
+- `model_version` — the GEM model version used.
+
+---
+
+## annotate_genes
+
+Maps Ensembl gene IDs to human-readable gene symbols and synonyms.
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `gene_ids` | string[] | Yes | Array of Ensembl gene IDs (e.g. `["ENSG00000141510"]`). Maximum 500 per call. |
+
+### Response
+
+```json
+{
+  "genes": [
+    {
+      "ensemblId": "ENSG00000141510",
+      "symbol": "TP53",
+      "synonyms": ["p53", "LFS1"]
+    }
+  ],
+  "unmatchedIds": []
+}
+```
+
+Use this tool instead of external gene annotation services whenever you need to
+resolve Ensembl IDs from analysis results.
