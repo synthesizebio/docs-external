@@ -1,97 +1,105 @@
 ---
 title: "Start generating genomics data with Synthesize Bio"
 sidebarTitle: "Home"
-mode: center
+mode: "center"
 ---
 
-<Columns cols={2} className="gap-8">
-<Column className="w-2/3">
-
-<div className="text-5xl mb-6 leading-[1.2] font-normal text-gray-800 dark:text-white">
-Start building <br />with Synthesize Bio
+<Columns cols={2}>
+  <Column>
+    <div className="text-5xl mb-6 leading-[1.2] font-normal text-gray-800 dark:text-white">
+  Virtual human modeling<br />for modern clinical development
 </div>
 
-
-<div className="text-2xl dark:text-gray-300">
-Generative models for human gene expression — predict bulk and single-cell profiles across tissues, cell types, perturbations, and disease states from metadata alone.
+    <div className="text-2xl dark:text-gray-300">
+  Generative models for human gene expression — predict bulk and single-cell profiles across tissues, cell types, perturbations, and disease states from metadata alone.
 </div>
 
-<div className="text-lg mt-6">
-Available through Python and R SDKs, MCP-compatible tools, and the web.
+    <div className="text-lg mt-6">
+  Available through Python and R SDKs, MCP-compatible tools, and the web.
 </div>
 
-<CardGroup cols={3} className="mt-6">
-  <Card title="Quickstart" icon="rocket" href="/get-started/quickstart" horizontal>
-  </Card>
-  <Card title="API key" icon="key" href="/get-started/quickstart" horizontal>
-  </Card>
-</CardGroup>
+    <CardGroup cols={3} className="mt-6">
+      <Card title="Quickstart" icon="rocket" horizontal href="/get-started/quickstart">
+      </Card>
 
-</Column>
-
-<Column>
-<Tabs className="my-code-tabs">
-  <Tab title="Python">
-    ```python
-    import pysynthbio
-
-    # Get an example query
-    query = pysynthbio.get_example_query(model_id="gem-1-bulk")["example_query"]
-
-    # Generate a dataset
-    result = pysynthbio.predict_query(query, model_id="gem-1-bulk")
-
-    # Access the results
-    metadata = result["metadata"]
-    expression = result["expression"]
-    ```
-  </Tab>
-  <Tab title="R">
-    ```r
-    library(rsynthbio)
-
-    # Get an example query
-    query <- get_example_query(model_id = "gem-1-bulk")$example_query
-
-    # Generate a dataset
-    result <- predict_query(query, model_id = "gem-1-bulk")
-
-    # Access the results
-    metadata <- result$metadata
-    expression <- result$expression
-    ```
-  </Tab>
-</Tabs>
-</Column>
+      <Card title="API key" icon="key" horizontal href="/get-started/quickstart">
+      </Card>
+    </CardGroup>
+  </Column>
+  <Column>
+    <Tabs>
+      <Tab title="Python">
+        ```python
+        import pysynthbio
+        
+        # Get an example query
+        query = pysynthbio.get_example_query(model_id="gem-1-bulk")["example_query"]
+        
+        # Generate a dataset
+        result = pysynthbio.predict_query(query, model_id="gem-1-bulk")
+        
+        # Access the results
+        metadata = result["metadata"]
+        expression = result["expression"]
+        ```
+      </Tab>
+      <Tab title="R">
+        ```r
+        library(rsynthbio)
+        
+        # Get an example query
+        query <- get_example_query(model_id = "gem-1-bulk")$example_query
+        
+        # Generate a dataset
+        result <- predict_query(query, model_id = "gem-1-bulk")
+        
+        # Access the results
+        metadata <- result$metadata
+        expression <- result$expression
+        ```
+      </Tab>
+    </Tabs>
+  </Column>
 </Columns>
 
 <CardGroup cols={4} className="mt-8">
   <Card href="/pysynthbio">
     <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
-      <img src="/images/entrypoint-python.svg" alt="Python logo" className="my-0 size-6 shrink-0" />
-      <span>Python SDK</span>
-    </div>
+  <img src="/images/entrypoint-python.svg" alt="Python logo" className="my-0 size-6 shrink-0" />
+
+  <span>Python SDK</span>
+</div>
+
     Use **pysynthbio** to predict gene expression from your Python notebooks and pipelines. Jump to the [Python SDK](/pysynthbio) or start from the [Quickstart](/get-started/quickstart).
   </Card>
+
   <Card href="/rsynthbio">
     <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
-      <img src="/images/entrypoint-r.svg" alt="R logo" className="my-0 size-6 shrink-0" />
-      <span>R SDK</span>
-    </div>
+  <img src="/images/entrypoint-r.svg" alt="R logo" className="my-0 size-6 shrink-0" />
+
+  <span>R SDK</span>
+</div>
+
     Use **rsynthbio** to predict gene expression from your R notebooks and pipelines. Jump to the [R SDK](/rsynthbio) or start from the [Quickstart](/get-started/quickstart).
   </Card>
+
   <Card href="/platform">
     <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
-      <img src="/images/entrypoint-mcp.svg" alt="MCP logo" className="my-0 size-6 shrink-0" />
-      <span>MCP</span>
-    </div>
+  <img src="/images/entrypoint-mcp.svg" alt="MCP logo" className="my-0 size-6 shrink-0" />
+
+  <span>MCP</span>
+</div>
+
     Use MCP-compatible AI tools to predict gene expression and chat about your results.
   </Card>
+
   <Card href="https://app.synthesize.bio">
     <div className="not-prose dark:text-white font-semibold flex gap-2 items-center">
-      <img src="/images/entrypoint-platform.svg" alt="Synthesize Bio logo" className="my-0 size-6 shrink-0" />
-      <span>Platform</span>
-    </div>
+  <img src="/images/entrypoint-platform.svg" alt="Synthesize Bio logo" className="my-0 size-6 shrink-0" />
+
+  <span>Platform</span>
+</div>
+
     Low- and no-code exploration in the browser — no local install required.
   </Card>
 </CardGroup>
@@ -104,9 +112,11 @@ Generate synthetic gene expression profiles from metadata alone, then use them i
   <Card title="GEM-1 bulk" icon="chart-column">
     Baseline model for predicting **bulk** gene expression.
   </Card>
+
   <Card title="GEM-1 single-cell" icon="microscope">
     Baseline model for predicting **single-cell** gene expression.
   </Card>
+
   <Card title="GEM-2" icon="sparkles">
     **Coming soon** — next-generation capabilities. Check the [platform](https://app.synthesize.bio) and these docs for updates.
   </Card>
@@ -118,12 +128,13 @@ Generate synthetic gene expression profiles from metadata alone, then use them i
   <Card title="Reference conditioning" icon="link">
     Anchor generation to an existing, real reference sample while you apply perturbations or other modifications.
   </Card>
+
   <Card title="Metadata prediction" icon="tags" href="/get-started/available-metadata">
     Predict or infer biological characteristics such as cell type, tissue, disease state, and more. Vocabularies and fields are model-specific — see [Available metadata](/get-started/available-metadata).
   </Card>
 </CardGroup>
 
-Reach out to partnerships@synthesize.bio if you are interested in trying out the advanced capabilities.
+Reach out to [partnerships@synthesize.bio](mailto:partnerships@synthesize.bio) if you are interested in trying out the advanced capabilities.
 
 ## Support
 
@@ -131,8 +142,8 @@ Reach out to partnerships@synthesize.bio if you are interested in trying out the
   <Card title="Schedule a meeting" icon="calendar" href="mailto:support@synthesize.bio?subject=Schedule%20a%20meeting%20%28docs%29">
     Email us to set up time with the team.
   </Card>
+
   <Card title="Email us" icon="envelope" href="mailto:support@synthesize.bio">
     [support@synthesize.bio](mailto:support@synthesize.bio) for product and integration questions.
   </Card>
 </CardGroup>
-
