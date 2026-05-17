@@ -1,0 +1,77 @@
+---
+title: Authentication
+description: How authentication works for the Synthesize Bio MCP server, including OAuth and API key access.
+---
+
+# Authentication
+
+The MCP server supports two authentication methods. Most users authenticate
+through OAuth when their MCP host supports it. API key access is available for
+programmatic use cases, shared project connections, and hosts that only support
+key-based authentication.
+
+## OAuth (recommended)
+
+The MCP server uses **OAuth 2.0 Authorization Code Flow with PKCE**. When you
+add the Synthesize Bio Claude Connector from Claude's connector marketplace, the
+entire flow is handled for you:
+
+1. Claude opens your browser to the Synthesize Bio sign-in page.
+2. You sign in with your existing Synthesize Bio account.
+3. Claude receives a token and caches it for future requests.
+
+No separate credentials or setup is required beyond a Synthesize Bio account.
+
+### Token lifecycle
+
+- Access tokens are issued during the OAuth flow and cached by the MCP client.
+- If a token expires, the client re-authenticates automatically.
+- Revoking access requires disconnecting the connector in Claude settings.
+
+## API key access
+
+If your workflow requires direct API access, a custom MCP client, or a shared
+connection in a host that supports key-based authentication, you can use a
+platform API key as a Bearer token.
+
+### Creating an API key
+
+1. Sign in to [app.synthesize.bio](https://app.synthesize.bio).
+2. Go to **Account → API Keys**.
+3. Create a new key and copy it immediately — it is only shown once.
+
+### Using the key
+
+Use this MCP URL:
+
+```text
+https://app.synthesize.bio/api/mcp
+```
+
+If your MCP host asks for a key name and key value, enter:
+
+```text
+Key name:  Authorization
+Key value: Bearer YOUR_API_KEY
+```
+
+The key name must be `Authorization`. The key value must include the `Bearer `
+prefix before the API key.
+
+For direct HTTP requests, pass the same value as an `Authorization` header:
+
+```bash
+curl https://app.synthesize.bio/api/mcp \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "MCP-Protocol-Version: 2024-11-05" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+```
+
+### Security
+
+- Keep your API key secret. Do not commit it to version control.
+- Rotate keys periodically from the API Keys page.
+- Each key is scoped to your account and workspace.

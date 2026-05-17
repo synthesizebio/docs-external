@@ -1,0 +1,36 @@
+---
+title: Synthesize Bio MCP
+description: Use Synthesize Bio MCP to run gene expression analyses from natural-language prompts with the Synthesize Bio Claude Connector.
+---
+
+# Synthesize Bio MCP
+
+Synthesize Bio MCP is a connection that lets AI tools like Claude use Synthesize Bio directly inside a chat. It can start and monitor gene expression analyses from a natural-language request.
+
+Use this guide to:
+
+- Set up the Claude Connector
+- Understand what kinds of analyses it supports
+- Write better prompts
+- Troubleshoot sign-in or long-running jobs
+
+## Server URL
+
+```text
+https://app.synthesize.bio/api/mcp
+```
+
+## What you can do with it
+
+- Compare gene expression between two sample groups such as heart vs liver or tumor vs normal tissue.
+- Run analyses in bulk or single-cell mode.
+- Let your AI assistant wait on the long-running workflow and return the completed report when it is ready.
+
+## Before you begin
+
+- You need a Synthesize Bio account on [app.synthesize.bio](https://app.synthesize.bio).
+- You need access to Claude connectors.
+- The Synthesize Bio Claude Connector uses OAuth to authenticate your account to the MCP.
+- Most analyses take several minutes to complete, so expect an asynchronous workflow rather than an instant result.
+
+Continue with [Overview](./overview) for a quick product summary, or go straight to [Set up the Claude Connector](./connect-in-claude).

@@ -1,0 +1,52 @@
+---
+title: How It Works
+description: Understand the asynchronous job flow and the analysis stages Synthesize Bio MCP runs for each request.
+---
+
+# How It Works
+
+Most users never need to think about the MCP internals, but it helps to know why the workflow can take a few minutes.
+
+## Asynchronous job flow
+
+Synthesize Bio MCP does not complete the entire analysis in a single instant response. Instead, it uses a background job flow:
+
+1. Claude starts the analysis and receives a job ID immediately.
+2. Claude checks the job status while the workflow continues on the Synthesize Bio platform.
+3. When the run is complete, Claude returns the finished report and any structured result references.
+
+This design keeps the integration responsive even when the underlying analysis takes several minutes.
+
+## Analysis stages
+
+Each run moves through three major stages:
+
+1. **`resolve_sample_metadata`**
+   Interprets the natural-language prompt and extracts the sample metadata needed to run the comparison.
+2. **GEM model**
+   Runs gene expression model inference for the requested groups and modality.
+3. **Differential expression**
+   Performs statistical testing with Welch's t-test and Benjamini-Hochberg false discovery rate correction.
+
+## Behind the scenes
+
+The MCP uses several internal tools behind the scenes:
+
+- `resolve_sample_metadata` extracts the sample metadata needed for the comparison.
+- `analyze_gene_expression` starts the job.
+- `get_analysis_results` checks progress and returns the completion result, including a fenced JSON block of gene-level results and the platform dataset link.
+- `get_counts_data_url` provides a download URL for the raw counts data.
+
+In practice, Claude usually handles this flow for the user. The important thing to remember is that a long-running analysis is expected behavior, not a failed request.
+
+## Result format
+
+Completed runs return a Markdown summary that contains:
+
+- the analysis metadata (prompt, modality, group counts, significance summary),
+- a link to the Synthesize Bio platform dataset for the run, and
+- a fenced ` ```json ` block with up to 1,000 of the most significant differentially expressed genes (under a top-level `results` array), so an LLM can parse the block directly to drive downstream analysis or chart widgets (e.g. a volcano plot with x = `log2FoldChange`, y = -log10(`padj`)).
+
+While a run is still in flight, `get_analysis_results` returns short progress messages instead.
+
+Continue to [Usage Examples](./usage-examples) for prompt patterns that work well.
