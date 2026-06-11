@@ -74,7 +74,15 @@ html[data-current-path="/"] footer > div {
 	box-sizing: border-box !important;
 }
 
-html[data-current-path="/"] header {
+/*
+  Homepage (`/`): hide Mintlify's per-page header (`<header id="header">` — the
+  wrapper for `#page-title` and `#page-context-menu`/Copy page) so the hero in
+  `<Columns>` starts at the top. The bare `header` selector also matched
+  `<header id="navbar">` (the top toolbar with logo, search, etc.), so the
+  navbar/toolbar was being hidden on `/` (APP-2419). Use the `#header` id to
+  scope this strictly to the page header.
+*/
+html[data-current-path="/"] #header {
 	display: none;
 }
 
