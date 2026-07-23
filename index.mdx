@@ -101,22 +101,36 @@ Available through Python and R SDKs, MCP-compatible tools, and the web.
 Generate synthetic gene expression profiles from metadata alone, then use them in downstream analysis and integration workflows.
 
 <CardGroup cols={3}>
-  <Card title="GEM-1 bulk" icon="chart-column">
+  <Card
+    title="GEM-1 bulk"
+    icon="chart-column"
+    href="https://www.biorxiv.org/content/10.1101/2025.09.08.674753v1"
+  >
     Baseline model for predicting **bulk** gene expression.
   </Card>
-  <Card title="GEM-1 single-cell" icon="microscope">
+  <Card
+    title="GEM-1 single-cell"
+    icon="microscope"
+    href="https://www.biorxiv.org/content/10.1101/2025.09.08.674753v1"
+  >
     Baseline model for predicting **single-cell** gene expression.
   </Card>
   <Card title="GEM-2" icon="sparkles">
-    **Coming soon** — next-generation capabilities. Check the [platform](https://app.synthesize.bio) and these docs for updates.
+    <Tooltip tip="Literature for GEM-2 is coming soon.">**Coming soon**</Tooltip> —
+    next-generation capabilities.
   </Card>
 </CardGroup>
 
 ## Advanced platform capabilities
 
 <CardGroup cols={2}>
-  <Card title="Reference conditioning" icon="link">
-    Anchor generation to an existing, real reference sample while you apply perturbations or other modifications.
+  <Card
+    title="Reference conditioning"
+    icon="link"
+    href="https://synthesizebio.substack.com/p/understanding-gem-1s-adaptability"
+  >
+    Anchor generation to an existing, real reference sample while you apply
+    perturbations or other modifications.
   </Card>
   <Card title="Metadata prediction" icon="tags" href="/get-started/available-metadata">
     Predict or infer biological characteristics such as cell type, tissue, disease state, and more. Vocabularies and fields are model-specific — see [Available metadata](/get-started/available-metadata).
