@@ -18,6 +18,11 @@
       "canonical": "https://docs.synthesize.bio"
     }
   },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_jyQMg4ynQkRKMXGT3qgvBbPHlvDHulUD9owEGrWj1v9"
+    }
+  },
   "navigation": {
     "anchors": [
       {
