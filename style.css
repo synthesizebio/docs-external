@@ -15,6 +15,18 @@
 	--primary-dark: 80 62 108;
 }
 
+/* Keep the vector wordmark and its small "docs" label legible in the navbar. */
+#navbar .nav-logo {
+	height: 2rem;
+	width: auto;
+}
+
+@media (min-width: 640px) {
+	#navbar .nav-logo {
+		height: 2.25rem;
+	}
+}
+
 /*
   Dark mode: Mintlify/Tailwind use space-separated RGB in `rgb(var(--token) / …)`.
 
