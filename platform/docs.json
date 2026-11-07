@@ -1,0 +1,32 @@
+{
+  "name": "Synthesize Bio MCP",
+  "description": "Customer-facing guides for Synthesize Bio MCP.",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "index",
+          "overview",
+          "connect-in-claude"
+        ]
+      },
+      {
+        "group": "Using the Connector",
+        "pages": [
+          "how-it-works",
+          "usage-examples",
+          "troubleshooting"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "tools-reference",
+          "authentication",
+          "privacy-and-support"
+        ]
+      }
+    ]
+  }
+}
